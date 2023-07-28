@@ -17,10 +17,10 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class OrderDetailDAO implements ModelRepository<OrderDetail> {
+public class OrderDetailRepository implements ModelRepository<OrderDetail> {
 
-    public static OrderDetailDAO getInstance() {
-        return new OrderDetailDAO();
+    public static OrderDetailRepository getInstance() {
+        return new OrderDetailRepository();
     }
 
     @Override

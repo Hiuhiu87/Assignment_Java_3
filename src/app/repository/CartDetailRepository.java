@@ -17,10 +17,10 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class CartDetailDAO implements ModelRepository<CartDetail> {
+public class CartDetailRepository implements ModelRepository<CartDetail> {
 
-    public static CartDetailDAO getInstance() {
-        return new CartDetailDAO();
+    public static CartDetailRepository getInstance() {
+        return new CartDetailRepository();
     }
 
     @Override

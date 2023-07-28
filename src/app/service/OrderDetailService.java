@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.repository.OrderDetailDAO;
+import app.repository.OrderDetailRepository;
 import app.model.OrderDetail;
 import java.util.ArrayList;
 
@@ -16,14 +16,14 @@ public class OrderDetailService {
 
     public boolean add(OrderDetail orderDetail) {
         if (orderDetail != null) {
-            int result = OrderDetailDAO.getInstance().insert(orderDetail);
+            int result = OrderDetailRepository.getInstance().insert(orderDetail);
             return result > 0;
         }
         return false;
     }
 
     public ArrayList<OrderDetail> getAll() {
-        return OrderDetailDAO.getInstance().getAll();
+        return OrderDetailRepository.getInstance().getAll();
     }
     
 }

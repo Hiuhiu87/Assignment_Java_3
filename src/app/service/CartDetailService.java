@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.repository.CartDetailDAO;
+import app.repository.CartDetailRepository;
 import app.model.CartDetail;
 import java.util.ArrayList;
 
@@ -16,23 +16,23 @@ public class CartDetailService {
 
     public boolean add(CartDetail cartDetail) {
         if (cartDetail != null) {
-            int addSuccess = CartDetailDAO.getInstance().insert(cartDetail);
+            int addSuccess = CartDetailRepository.getInstance().insert(cartDetail);
             return addSuccess > 0;
         }
         return false;
     }
 
     public ArrayList<CartDetail> getAll() {
-        return CartDetailDAO.getInstance().getAll();
+        return CartDetailRepository.getInstance().getAll();
     }
 
     public ArrayList<CartDetail> getByCode(String cartCode) {
-        return CartDetailDAO.getInstance().getCartDetailByCartCode(cartCode);
+        return CartDetailRepository.getInstance().getCartDetailByCartCode(cartCode);
     }
 
     public boolean delete(CartDetail cartDetail) {
         if (cartDetail != null) {
-            int deleteSuccess = CartDetailDAO.getInstance().delete(cartDetail);
+            int deleteSuccess = CartDetailRepository.getInstance().delete(cartDetail);
             return deleteSuccess > 0;
         }
         return false;
