@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.GPUInforDAO;
+import app.repository.GPUInforRepository;
 import java.util.UUID;
 
 /**
@@ -19,7 +19,7 @@ public class GPUInfo {
 
     public GPUInfo(String name) {
         this.id = UUID.randomUUID();
-        this.code = GPUInforDAO.getInstance().generateNextModelCode();
+        this.code = GPUInforRepository.getInstance().generateNextModelCode();
         this.name = name;
     }
 

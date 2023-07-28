@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.CompanyDAO;
+import app.repository.CompanyRepository;
 import app.model.Company;
 import java.util.ArrayList;
 
@@ -15,19 +15,19 @@ import java.util.ArrayList;
 public class CompanyService {
 
     public ArrayList<Company> getAll() {
-        return CompanyDAO.getInstance().getAll();
+        return CompanyRepository.getInstance().getAll();
     }
 
     public void add(Company cpn) {
-        CompanyDAO.getInstance().insert(cpn);
+        CompanyRepository.getInstance().insert(cpn);
     }
 
     public void update(Company cpn) {
-        CompanyDAO.getInstance().update(cpn);
+        CompanyRepository.getInstance().update(cpn);
     }
 
     public ArrayList<String> getNameCompany() {
-        return CompanyDAO.getInstance().getNameCompany();
+        return CompanyRepository.getInstance().getNameCompany();
     }
 
 }

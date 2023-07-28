@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.OrderDAO;
+import app.repository.OrderRepository;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -30,7 +30,7 @@ public class Order {
         this.id = UUID.randomUUID();
         this.customer = customer;
         this.user = user;
-        this.code = OrderDAO.getInstance().generateNextModelCode();
+        this.code = OrderRepository.getInstance().generateNextModelCode();
         this.createDate = LocalDate.now();
         this.payStatus = 0;
         this.typePayment = "Đang Xử Lý";

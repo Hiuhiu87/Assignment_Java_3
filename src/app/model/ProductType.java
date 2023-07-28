@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.ProductTypeDAO;
+import app.repository.ProductTypeRepository;
 import java.util.UUID;
 
 /**
@@ -19,7 +19,7 @@ public class ProductType {
 
     public ProductType(String name) {
         this.id = UUID.randomUUID();
-        this.code = ProductTypeDAO.getInstance().generateNextModelCode();
+        this.code = ProductTypeRepository.getInstance().generateNextModelCode();
         this.name = name;
     }
 

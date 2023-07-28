@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
-import app.model.CPUInfo;
+import app.model.ProductType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,64 +17,64 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class CPUInforDAO implements ModelDAO<CPUInfo>{
+public class ProductTypeRepository implements ModelRepository<ProductType>{
     
-    public static CPUInforDAO getInstance() {
-        return new CPUInforDAO();
+    public static ProductTypeRepository getInstance() {
+        return new ProductTypeRepository();
     }
     
-    public CPUInfo selectByName(String name) {
-        CPUInfo cpu = new CPUInfo();
+    public ProductType selectByName(String name) {
+        ProductType prdType = new ProductType();
         try {
-            Connection conn = new DBConnector().getConnection();
-            String sql = "SELECT * from ThongTinCPU WHERE Ten = ?";
+            Connection conn = DBConnector.getConnection();
+            String sql = "SELECT * from DongSP WHERE Ten = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setObject(1, name);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                cpu.setId(rs.getObject(1, UUID.class));
-                cpu.setCode(rs.getString(2));
-                cpu.setName(rs.getString(3));
+                prdType.setId(rs.getObject(1, UUID.class));
+                prdType.setCode(rs.getString(2));
+                prdType.setName(rs.getString(3));
             }
             conn.close();
-            return cpu;
+            return prdType;
         } catch (SQLException e) {
             return null;
         }
     }
 
-    public CPUInfo selectByUUID(UUID id) {
-        CPUInfo cpu = new CPUInfo();
+    public ProductType selectByUUID(UUID id) {
+        ProductType productType = new ProductType();
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "SELECT * from ThongTinCPU WHERE id = ?";
+            String sql = "SELECT * from DongSP WHERE id = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setObject(1, id);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                cpu.setId(rs.getObject(1, UUID.class));
-                cpu.setCode(rs.getString(2));
-                cpu.setName(rs.getString(3));
+                productType.setId(rs.getObject(1, UUID.class));
+                productType.setCode(rs.getString(2));
+                productType.setName(rs.getString(3));
             }
             conn.close();
-            return cpu;
+            return productType;
         } catch (SQLException e) {
             return null;
         }
     }
     
-    public ArrayList<String> getNameCpu() {
-        ArrayList<String> listCpu = new ArrayList<>();
+    public ArrayList<String> getNameType() {
+        ArrayList<String> listNameType = new ArrayList<>();
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "Select Ten FROM ThongTinCPU";
+            String sql = "Select Ten FROM DongSP";
             PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                listCpu.add(rs.getString(1));
+                listNameType.add(rs.getString(1));
             }
             conn.close();
-            return listCpu;
+            return listNameType;
         } catch (SQLException e) {
             return null;
         }
@@ -88,21 +88,21 @@ public class CPUInforDAO implements ModelDAO<CPUInfo>{
 
         try {
             conn = DBConnector.getConnection();
-            String sql = "SELECT MAX(Ma) FROM ThongTinCPU";
+            String sql = "SELECT MAX(Ma) FROM DongSP";
             stm = conn.prepareStatement(sql);
             rs = stm.executeQuery();
 
             if (rs.next()) {
                 String lastCode = rs.getString(1);
                 if (lastCode == null) {
-                    return "CPU1";
+                    return "TSP1";
                 }
                 int lastNumber = Integer.parseInt(lastCode.substring(3));
                 int nextNumber = lastNumber + 1;
-                String nextCode = "CPU" + nextNumber;
+                String nextCode = "TSP" + nextNumber;
                 return nextCode;
             } else {
-                return "CPU1";
+                return "TSP1";
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,10 +127,10 @@ public class CPUInforDAO implements ModelDAO<CPUInfo>{
     }
 
     @Override
-    public int insert(CPUInfo t) {
+    public int insert(ProductType t) {
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "INSERT INTO ThongTinCPU\n"
+            String sql = "INSERT INTO DongSP\n"
                     + "VALUES(?, ?, ?)";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setObject(1, t.getId());
@@ -145,35 +145,35 @@ public class CPUInforDAO implements ModelDAO<CPUInfo>{
     }
 
     @Override
-    public int update(CPUInfo t) {
+    public int update(ProductType t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
-    public ArrayList<CPUInfo> getAll() {
-        ArrayList<CPUInfo> listCpu = new ArrayList<>();
+    public ArrayList<ProductType> getAll() {
+        ArrayList<ProductType> listProductType = new ArrayList<>();
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "SELECT * FROM ThongTinCPU";
+            String sql = "SELECT * FROM DongSP";
             PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                CPUInfo cpu = new CPUInfo();
-                cpu.setId(rs.getObject(1, UUID.class));
-                cpu.setCode(rs.getString(2));
-                cpu.setName(rs.getString(3));
-                listCpu.add(cpu);
+                ProductType prdType = new ProductType();
+                prdType.setId(rs.getObject(1, UUID.class));
+                prdType.setCode(rs.getString(2));
+                prdType.setName(rs.getString(3));
+                listProductType.add(prdType);
             }
             conn.close();
-            return listCpu;
+            return listProductType;
         } catch (Exception e) {
             return null;
         }
     }
 
     @Override
-    public CPUInfo selectById(String code) {
+    public ProductType selectById(String code) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
 }

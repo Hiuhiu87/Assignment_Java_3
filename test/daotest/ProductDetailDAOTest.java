@@ -4,7 +4,7 @@
  */
 package daotest;
 
-import app.dao.ProductDetailDAO;
+import app.repository.ProductDetailRepository;
 import app.model.ProductDetail;
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class ProductDetailDAOTest {
     public static void main(String[] args) {
-        ArrayList<ProductDetail> serialArrayList = ProductDetailDAO.getInstance().getListByName("Dell");
+        ArrayList<ProductDetail> serialArrayList = ProductDetailRepository.getInstance().getListByName("Dell");
         System.out.println(serialArrayList.size());
         for (ProductDetail productDetail : serialArrayList) {
             System.out.println(productDetail.getSerial());

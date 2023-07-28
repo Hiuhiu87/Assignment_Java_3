@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
 import app.model.Customer;
@@ -20,10 +20,10 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class CustomerDAO implements ModelDAO<Customer> {
+public class CustomerRepository implements ModelRepository<Customer> {
 
-    public static CustomerDAO getInstance() {
-        return new CustomerDAO();
+    public static CustomerRepository getInstance() {
+        return new CustomerRepository();
     }
 
     @Override

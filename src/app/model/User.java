@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.UserDAO;
+import app.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Random;
@@ -32,7 +32,7 @@ public class User {
 
     public User(String name, String middleName, String lastName, boolean gender, LocalDate dateOfBirth, String address, String phoneNumber, Office office, boolean status, String email) {
         this.id = UUID.randomUUID();
-        this.code = UserDAO.getInstance().generateNextModelCode();
+        this.code = UserRepository.getInstance().generateNextModelCode();
         this.name = name;
         this.middleName = middleName;
         this.lastName = lastName;

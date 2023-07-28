@@ -4,7 +4,7 @@
  */
 package daotest;
 
-import app.dao.CompanyDAO;
+import app.repository.CompanyRepository;
 import app.dbconnect.DBConnector;
 import app.model.Company;
 import java.sql.Connection;

@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.GPUInforDAO;
+import app.repository.GPUInforRepository;
 import app.model.GPUInfo;
 import java.util.ArrayList;
 
@@ -15,18 +15,18 @@ import java.util.ArrayList;
 public class GPUInforService {
 
     public ArrayList<GPUInfo> getAll() {
-        return GPUInforDAO.getInstance().getAll();
+        return GPUInforRepository.getInstance().getAll();
     }
 
     public void add(GPUInfo gpu) {
-        GPUInforDAO.getInstance().insert(gpu);
+        GPUInforRepository.getInstance().insert(gpu);
     }
 
     public void update(GPUInfo gpu) {
-        GPUInforDAO.getInstance().update(gpu);
+        GPUInforRepository.getInstance().update(gpu);
     }
 
     public ArrayList<String> getNameCpu() {
-        return GPUInforDAO.getInstance().getNameGpu();
+        return GPUInforRepository.getInstance().getNameGpu();
     }
 }

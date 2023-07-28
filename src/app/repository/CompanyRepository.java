@@ -2,22 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
-import app.model.Product;
+import app.model.Company;
 import java.util.ArrayList;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.UUID;
 
 /**
  *
  * @author Admin
  */
-public class ProductDAO implements ModelDAO<Product> {
+public class CompanyRepository implements ModelRepository<Company> {
 
-    public static ProductDAO getInstance() {
-        return new ProductDAO();
+    public static CompanyRepository getInstance() {
+        return new CompanyRepository();
     }
 
     @Override
@@ -28,21 +31,21 @@ public class ProductDAO implements ModelDAO<Product> {
 
         try {
             conn = DBConnector.getConnection();
-            String sql = "SELECT MAX(Ma) FROM SanPham";
+            String sql = "SELECT MAX(Ma) FROM NSX";
             stm = conn.prepareStatement(sql);
             rs = stm.executeQuery();
 
             if (rs.next()) {
                 String lastCode = rs.getString(1);
                 if (lastCode == null) {
-                    return "SP1";
+                    return "NSX1";
                 }
-                int lastNumber = Integer.parseInt(lastCode.substring(2));
+                int lastNumber = Integer.parseInt(lastCode.substring(3));
                 int nextNumber = lastNumber + 1;
-                String nextCode = "SP" + nextNumber;
+                String nextCode = "NSX" + nextNumber;
                 return nextCode;
             } else {
-                return "SP1";
+                return "NSX1";
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,131 +69,112 @@ public class ProductDAO implements ModelDAO<Product> {
         return null;
     }
 
-    @Override
-    public int insert(Product t) {
+    public ArrayList<String> getNameCompany() {
+        ArrayList<String> listNameCompany = new ArrayList<>();
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "INSERT INTO SanPham\n"
-                    + "VALUES (?,?,?,?)";
-            PreparedStatement stm = conn.prepareStatement(sql);
-            UUID id = UUID.randomUUID();
-            stm.setObject(1, id);
-            stm.setString(2, t.getCode());
-            stm.setString(3, t.getName());
-            stm.setInt(4, t.getQuantity());
-            int result = stm.executeUpdate();
-            conn.close();
-            return result;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    @Override
-    public int update(Product t) {
-        try {
-            Connection conn = DBConnector.getConnection();
-            String sql = "UPDATE SanPham\n"
-                    + "SET Ten = ? \n"
-                    + "WHERE Ma = ?";
-            PreparedStatement stm = conn.prepareStatement(sql);
-            stm.setString(1, t.getName());
-            stm.setString(2, t.getCode());
-            int result = stm.executeUpdate();
-            conn.close();
-            return result;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    @Override
-    public ArrayList<Product> getAll() {
-        ArrayList<Product> listProducts = new ArrayList<>();
-        try {
-            Connection conn = DBConnector.getConnection();
-            String sql = "SELECT * FROM SanPham";
+            String sql = "Select Ten FROM NSX";
             PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Product prd = new Product();
-                prd.setCode(rs.getString(2));
-                prd.setName(rs.getString(3));
-                prd.setQuantity(rs.getInt(4));
-                listProducts.add(prd);
+                listNameCompany.add(rs.getString(1));
             }
             conn.close();
-            return listProducts;
+            return listNameCompany;
         } catch (SQLException e) {
             return null;
         }
     }
 
-    public Product selectByName(String name) {
-        Product prd = new Product();
+    @Override
+    public int insert(Company t) {
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "SELECT * from SanPham WHERE Ten = ?";
+            String sql = "INSERT INTO NSX\n"
+                    + "VALUES(?, ?, ?)";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setObject(1, t.getId());
+            stm.setString(2, t.getCode());
+            stm.setString(3, t.getName());
+            int res = stm.executeUpdate();
+            conn.close();
+            return res;
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    @Override
+    public int update(Company t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public ArrayList<Company> getAll() {
+        ArrayList<Company> listCompany = new ArrayList<>();
+        try {
+            Connection conn = DBConnector.getConnection();
+            String sql = "SELECT * FROM NSX";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Company company = new Company();
+                company.setId(rs.getObject(1, UUID.class));
+                company.setCode(rs.getString(2));
+                company.setName(rs.getString(3));
+                listCompany.add(company);
+            }
+            conn.close();
+            return listCompany;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Company selectByName(String name) {
+        Company cpn = new Company();
+        try {
+            Connection conn = DBConnector.getConnection();
+            String sql = "SELECT * from NSX WHERE Ten = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setObject(1, name);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                prd.setId(rs.getObject(1, UUID.class));
-                prd.setCode(rs.getString(2));
-                prd.setName(rs.getString(3));
-                prd.setQuantity(rs.getInt(4));
+                cpn.setId(rs.getObject(1, UUID.class));
+                cpn.setCode(rs.getString(2));
+                cpn.setName(rs.getString(3));
             }
             conn.close();
-            return prd;
+            return cpn;
         } catch (SQLException e) {
             return null;
         }
     }
 
-    public Product selectByUUID(UUID id) {
-        Product prd = new Product();
+    public Company selectByUUID(UUID id) {
+        Company cpn = new Company();
         try {
             Connection conn = DBConnector.getConnection();
             System.out.println(conn);
-            String sql = "SELECT * from SanPham WHERE id = ?";
+            String sql = "SELECT * from NSX WHERE id = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setObject(1, id);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                prd.setId(rs.getObject(1, UUID.class));
-                prd.setCode(rs.getString(2));
-                prd.setName(rs.getString(3));
-                prd.setQuantity(rs.getInt(4));
+                cpn.setId(rs.getObject(1, UUID.class));
+                cpn.setCode(rs.getString(2));
+                cpn.setName(rs.getString(3));
             }
             conn.close();
-            return prd;
+            return cpn;
         } catch (SQLException e) {
             return null;
         }
     }
 
-    public boolean updateQuantityProduct(int quantity, String code) {
-        try (Connection conn = DBConnector.getConnection()) {
-            String sql = """
-                         UPDATE SanPham 
-                         SET SoLuongTon = ?
-                         WHERE Ma = ?
-                         """;
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setObject(1, quantity);
-            preparedStatement.setObject(2, code);
-            int result = preparedStatement.executeUpdate();
-            return result > 0;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     @Override
-    public Product selectById(String code) {
+    public Company selectById(String code) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
 }

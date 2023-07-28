@@ -4,7 +4,7 @@
  */
 package app.view;
 
-import app.dao.OfficeDAO;
+import app.repository.OfficeRepository;
 import app.model.Office;
 import app.model.User;
 import app.service.UserService;
@@ -107,7 +107,7 @@ public class StaffPanel extends javax.swing.JPanel {
         String phoneNumber = "";
         String address = "";
         String email = "";
-        Office office = OfficeDAO.getInstance().selectByRole(rdManager.isSelected());
+        Office office = OfficeRepository.getInstance().selectByRole(rdManager.isSelected());
         int countError = 0;
 
         if (txtFullName.getText().trim().isEmpty()) {

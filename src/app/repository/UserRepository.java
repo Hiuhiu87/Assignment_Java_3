@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
 import app.model.User;
@@ -18,10 +18,10 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class UserDAO implements ModelDAO<User> {
+public class UserRepository implements ModelRepository<User> {
 
-    public static UserDAO getInstance() {
-        return new UserDAO();
+    public static UserRepository getInstance() {
+        return new UserRepository();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class UserDAO implements ModelDAO<User> {
                     user.setAddress(rs.getString(8));
                     user.setPhoneNumber(rs.getString(9));
                     user.setPassword(rs.getString(10));
-                    user.setOffice(OfficeDAO.getInstance().selectById(rs.getObject(11, UUID.class)));
+                    user.setOffice(OfficeRepository.getInstance().selectById(rs.getObject(11, UUID.class)));
                     user.setStatus(rs.getBoolean(12));
                     user.setEmail(rs.getString(13));
                 }
@@ -163,7 +163,7 @@ public class UserDAO implements ModelDAO<User> {
                 user.setDateOfBirth(rs.getObject(6, LocalDate.class));
                 user.setAddress(rs.getString(7));
                 user.setPhoneNumber(rs.getString(8));
-                user.setOffice(OfficeDAO.getInstance().selectById(rs.getObject(9, UUID.class)));
+                user.setOffice(OfficeRepository.getInstance().selectById(rs.getObject(9, UUID.class)));
                 user.setStatus(rs.getBoolean(10));
                 user.setEmail(rs.getString(11));
             }
@@ -209,7 +209,7 @@ public class UserDAO implements ModelDAO<User> {
                 user.setDateOfBirth(resultSet.getObject(7, LocalDate.class));
                 user.setAddress(resultSet.getString(8));
                 user.setPhoneNumber(resultSet.getString(9));
-                user.setOffice(OfficeDAO.getInstance().selectById(resultSet.getObject(11, UUID.class)));
+                user.setOffice(OfficeRepository.getInstance().selectById(resultSet.getObject(11, UUID.class)));
                 user.setStatus(resultSet.getBoolean(12));
                 user.setEmail(resultSet.getString(13));
                 listUser.add(user);
@@ -297,7 +297,7 @@ public class UserDAO implements ModelDAO<User> {
                 user.setDateOfBirth(resultSet.getObject(7, LocalDate.class));
                 user.setAddress(resultSet.getString(8));
                 user.setPhoneNumber(resultSet.getString(9));
-                user.setOffice(OfficeDAO.getInstance().selectById(resultSet.getObject(11, UUID.class)));
+                user.setOffice(OfficeRepository.getInstance().selectById(resultSet.getObject(11, UUID.class)));
                 user.setStatus(resultSet.getBoolean(12));
                 user.setEmail(resultSet.getString(13));
                 listUser.add(user);
@@ -344,7 +344,7 @@ public class UserDAO implements ModelDAO<User> {
                 user.setDateOfBirth(rs.getObject(6, LocalDate.class));
                 user.setAddress(rs.getString(7));
                 user.setPhoneNumber(rs.getString(8));
-                user.setOffice(OfficeDAO.getInstance().selectById(rs.getObject(9, UUID.class)));
+                user.setOffice(OfficeRepository.getInstance().selectById(rs.getObject(9, UUID.class)));
                 user.setStatus(rs.getBoolean(10));
                 user.setEmail(rs.getString(11));
             }

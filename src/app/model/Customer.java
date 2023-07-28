@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.CustomerDAO;
+import app.repository.CustomerRepository;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -28,7 +28,7 @@ public class Customer {
 
     public Customer(String name, String middleName, String lastName, LocalDate dateOfBirth, String phoneNumber, String address) {
         this.id = UUID.randomUUID();
-        this.code = CustomerDAO.getInstance().generateNextModelCode();
+        this.code = CustomerRepository.getInstance().generateNextModelCode();
         this.name = name;
         this.middleName = middleName;
         this.lastName = lastName;

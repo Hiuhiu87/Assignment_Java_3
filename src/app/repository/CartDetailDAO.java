@@ -2,17 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
-import app.model.CartDetail;
-import java.util.ArrayList;
 import app.dbconnect.DBConnector;
 import app.model.CartDetail;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -20,7 +17,7 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class CartDetailDAO implements ModelDAO<CartDetail> {
+public class CartDetailDAO implements ModelRepository<CartDetail> {
 
     public static CartDetailDAO getInstance() {
         return new CartDetailDAO();
@@ -90,8 +87,8 @@ public class CartDetailDAO implements ModelDAO<CartDetail> {
             ArrayList<CartDetail> listCarts = new ArrayList<>();
             while (resultSet.next()) {
                 CartDetail cartDetail = new CartDetail();
-                cartDetail.setCart(CartDAO.getInstance().selectByUUID(resultSet.getObject(1, UUID.class)));
-                cartDetail.setProduct(ProductDetailDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                cartDetail.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(1, UUID.class)));
+                cartDetail.setProduct(ProductDetailRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
                 cartDetail.setQuantity(resultSet.getInt(3));
                 cartDetail.setUnitPrice(resultSet.getBigDecimal(4));
                 listCarts.add(cartDetail);
@@ -119,8 +116,8 @@ public class CartDetailDAO implements ModelDAO<CartDetail> {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 CartDetail cartDetail = new CartDetail();
-                cartDetail.setCart(CartDAO.getInstance().selectByUUID(resultSet.getObject(1, UUID.class)));
-                cartDetail.setProduct(ProductDetailDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                cartDetail.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(1, UUID.class)));
+                cartDetail.setProduct(ProductDetailRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
                 cartDetail.setQuantity(resultSet.getInt(3));
                 cartDetail.setUnitPrice(resultSet.getBigDecimal(4));
                 list.add(cartDetail);
@@ -129,13 +126,6 @@ public class CartDetailDAO implements ModelDAO<CartDetail> {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    public static void main(String[] args) {
-        ArrayList<CartDetail> list = CartDetailDAO.getInstance().getCartDetailByCartCode("GH1");
-        for (CartDetail cartDetail : list) {
-            System.out.println(cartDetail.getProduct().getIdProduct().getCode());
         }
     }
 

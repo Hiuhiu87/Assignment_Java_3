@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.ColorDAO;
+import app.repository.ColorRepository;
 import app.model.ColorProduct;
 import java.util.ArrayList;
 
@@ -15,19 +15,19 @@ import java.util.ArrayList;
 public class ColorProductService {
 
     public ArrayList<ColorProduct> getAll() {
-        return ColorDAO.getInstance().getAll();
+        return ColorRepository.getInstance().getAll();
     }
 
     public void add(ColorProduct color) {
-        ColorDAO.getInstance().insert(color);
+        ColorRepository.getInstance().insert(color);
     }
 
     public void update(ColorProduct color) {
-        ColorDAO.getInstance().update(color);
+        ColorRepository.getInstance().update(color);
     }
 
     public ArrayList<String> getNameColor() {
-        return ColorDAO.getInstance().getNameColor();
+        return ColorRepository.getInstance().getNameColor();
     }
     
 }

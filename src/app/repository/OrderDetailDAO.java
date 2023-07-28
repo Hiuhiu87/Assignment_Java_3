@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
 import app.model.OrderDetail;
@@ -17,7 +17,7 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class OrderDetailDAO implements ModelDAO<OrderDetail> {
+public class OrderDetailDAO implements ModelRepository<OrderDetail> {
 
     public static OrderDetailDAO getInstance() {
         return new OrderDetailDAO();
@@ -67,8 +67,8 @@ public class OrderDetailDAO implements ModelDAO<OrderDetail> {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 OrderDetail orderDetail = new OrderDetail();
-                orderDetail.setOrder(OrderDAO.getInstance().selectByUUID(resultSet.getObject(1, UUID.class)));
-                orderDetail.setProduct(ProductDetailDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                orderDetail.setOrder(OrderRepository.getInstance().selectByUUID(resultSet.getObject(1, UUID.class)));
+                orderDetail.setProduct(ProductDetailRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
                 orderDetail.setQuantity(resultSet.getInt(3));
                 orderDetail.setUnitPrice(resultSet.getBigDecimal(4));
                 listOrderDetails.add(orderDetail);

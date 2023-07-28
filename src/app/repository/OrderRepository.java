@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
 import app.model.Order;
@@ -18,10 +18,10 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class OrderDAO implements ModelDAO<Order> {
+public class OrderRepository implements ModelRepository<Order> {
 
-    public static OrderDAO getInstance() {
-        return new OrderDAO();
+    public static OrderRepository getInstance() {
+        return new OrderRepository();
     }
 
     @Override
@@ -96,13 +96,13 @@ public class OrderDAO implements ModelDAO<Order> {
             while (resultSet.next()) {
                 Order order = new Order();
                 order.setId(resultSet.getObject(1, UUID.class));
-                order.setCustomer(CustomerDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
-                order.setUser(UserDAO.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
+                order.setCustomer(CustomerRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                order.setUser(UserRepository.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
                 order.setCode(resultSet.getString(4));
                 order.setCreateDate(resultSet.getObject(5, LocalDate.class));
                 order.setPayStatus(resultSet.getInt(6));
                 order.setTypePayment(resultSet.getString(7));
-                order.setCart(CartDAO.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
+                order.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
                 listOrders.add(order);
             }
             return listOrders;
@@ -182,13 +182,13 @@ public class OrderDAO implements ModelDAO<Order> {
             Order order = new Order();
             while (resultSet.next()) {
                 order.setId(resultSet.getObject(1, UUID.class));
-                order.setCustomer(CustomerDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
-                order.setUser(UserDAO.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
+                order.setCustomer(CustomerRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                order.setUser(UserRepository.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
                 order.setCode(resultSet.getString(4));
                 order.setCreateDate(resultSet.getObject(5, LocalDate.class));
                 order.setPayStatus(resultSet.getInt(6));
                 order.setTypePayment(resultSet.getString(7));
-                order.setCart(CartDAO.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
+                order.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
             }
             return order;
         } catch (SQLException e) {
@@ -217,13 +217,13 @@ public class OrderDAO implements ModelDAO<Order> {
             while (resultSet.next()) {
                 Order order = new Order();
                 order.setId(resultSet.getObject(1, UUID.class));
-                order.setCustomer(CustomerDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
-                order.setUser(UserDAO.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
+                order.setCustomer(CustomerRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                order.setUser(UserRepository.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
                 order.setCode(resultSet.getString(4));
                 order.setCreateDate(resultSet.getObject(5, LocalDate.class));
                 order.setPayStatus(resultSet.getInt(6));
                 order.setTypePayment(resultSet.getString(7));
-                order.setCart(CartDAO.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
+                order.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
                 listOrders.add(order);
             }
             return listOrders;
@@ -253,13 +253,13 @@ public class OrderDAO implements ModelDAO<Order> {
             ResultSet resultSet = stm.executeQuery();
             while (resultSet.next()) {
                 order.setId(resultSet.getObject(1, UUID.class));
-                order.setCustomer(CustomerDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
-                order.setUser(UserDAO.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
+                order.setCustomer(CustomerRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                order.setUser(UserRepository.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
                 order.setCode(resultSet.getString(4));
                 order.setCreateDate(resultSet.getObject(5, LocalDate.class));
                 order.setPayStatus(resultSet.getInt(6));
                 order.setTypePayment(resultSet.getString(7));
-                order.setCart(CartDAO.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
+                order.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
             }
             conn.close();
             return order;

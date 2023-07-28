@@ -4,8 +4,8 @@
  */
 package app.service;
 
-import app.dao.ProductDAO;
-import app.dao.ProductDetailDAO;
+import app.repository.ProductRepository;
+import app.repository.ProductDetailRepository;
 import app.model.Product;
 import java.util.ArrayList;
 
@@ -16,20 +16,20 @@ import java.util.ArrayList;
 public class ProductService {
 
     public ArrayList<Product> getAll() {
-        return ProductDAO.getInstance().getAll();
+        return ProductRepository.getInstance().getAll();
     }
 
     public void add(Product prd) {
-        ProductDAO.getInstance().insert(prd);
+        ProductRepository.getInstance().insert(prd);
     }
 
     public void update(Product prd) {
-        ProductDAO.getInstance().update(prd);
+        ProductRepository.getInstance().update(prd);
     }
     
     public boolean updateQuantityProduct(String code){
-        int quantityProduct = ProductDetailDAO.getInstance().getQuantityProductById(code);
-        return ProductDAO.getInstance().updateQuantityProduct(quantityProduct, code);
+        int quantityProduct = ProductDetailRepository.getInstance().getQuantityProductById(code);
+        return ProductRepository.getInstance().updateQuantityProduct(quantityProduct, code);
     }
     
 }

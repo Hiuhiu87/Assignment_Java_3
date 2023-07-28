@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
 import app.model.Office;
@@ -13,10 +13,10 @@ import java.sql.*;
  *
  * @author Admin
  */
-public class OfficeDAO {
+public class OfficeRepository {
 
-    public static OfficeDAO getInstance() {
-        return new OfficeDAO();
+    public static OfficeRepository getInstance() {
+        return new OfficeRepository();
     }
 
     public Office selectById(UUID id) {

@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
-import app.model.GPUInfo;
+import app.model.ColorProduct;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,92 +17,74 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class GPUInforDAO implements ModelDAO<GPUInfo>{
-    
-    public static GPUInforDAO getInstance() {
-        return new GPUInforDAO();
+public class ColorRepository implements ModelRepository<ColorProduct> {
+
+    public static ColorRepository getInstance() {
+        return new ColorRepository();
     }
-    
-    public GPUInfo selectByName(String name) {
-        GPUInfo gpu = new GPUInfo();
+
+    public ColorProduct selectByName(String name) {
+        ColorProduct color = new ColorProduct();
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "SELECT * from ThongTinGPU WHERE Ten = ?";
+            String sql = "SELECT * from MauSac WHERE Ten = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setObject(1, name);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                gpu.setId(rs.getObject(1, UUID.class));
-                gpu.setCode(rs.getString(2));
-                gpu.setName(rs.getString(3));
+                color.setId(rs.getObject(1, UUID.class));
+                color.setCode(rs.getString(2));
+                color.setName(rs.getString(3));
             }
             conn.close();
-            return gpu;
+            return color;
         } catch (SQLException e) {
             return null;
         }
     }
 
-    public GPUInfo selectByUUID(UUID id) {
-        GPUInfo gpu = new GPUInfo();
+    public ColorProduct selectByUUID(UUID id) {
+        ColorProduct colorProduct = new ColorProduct();
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "SELECT * from ThongTinGPU WHERE id = ?";
+            String sql = "SELECT * from MauSac WHERE id = ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setObject(1, id);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                gpu.setId(rs.getObject(1, UUID.class));
-                gpu.setCode(rs.getString(2));
-                gpu.setName(rs.getString(3));
+                colorProduct.setId(rs.getObject(1, UUID.class));
+                colorProduct.setCode(rs.getString(2));
+                colorProduct.setName(rs.getString(3));
             }
             conn.close();
-            return gpu;
+            return colorProduct;
         } catch (SQLException e) {
             return null;
         }
     }
-    
-     public ArrayList<String> getNameGpu() {
-        ArrayList<String> listGpu = new ArrayList<>();
-        try {
-            Connection conn = DBConnector.getConnection();
-            String sql = "Select Ten FROM ThongTinGPU";
-            PreparedStatement stm = conn.prepareStatement(sql);
-            ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
-                listGpu.add(rs.getString(1));
-            }
-            conn.close();
-            return listGpu;
-        } catch (SQLException e) {
-            return null;
-        }
-    }
-     
-    @Override
-     public String generateNextModelCode() {
+
+    public String generateNextModelCode() {
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
 
         try {
             conn = DBConnector.getConnection();
-            String sql = "SELECT MAX(Ma) FROM ThongTinGPU";
+            String sql = "SELECT MAX(Ma) FROM MauSac";
             stm = conn.prepareStatement(sql);
             rs = stm.executeQuery();
 
             if (rs.next()) {
                 String lastCode = rs.getString(1);
                 if (lastCode == null) {
-                    return "GPU1";
+                    return "MS1";
                 }
-                int lastNumber = Integer.parseInt(lastCode.substring(3));
+                int lastNumber = Integer.parseInt(lastCode.substring(2));
                 int nextNumber = lastNumber + 1;
-                String nextCode = "GPU" + nextNumber;
+                String nextCode = "MS" + nextNumber;
                 return nextCode;
             } else {
-                return "GPU1";
+                return "MS1";
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -126,11 +108,28 @@ public class GPUInforDAO implements ModelDAO<GPUInfo>{
         return null;
     }
 
-    @Override
-    public int insert(GPUInfo t) {
+    public ArrayList<String> getNameColor() {
+        ArrayList<String> listColor = new ArrayList<>();
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "INSERT INTO ThongTinGPU\n"
+            String sql = "Select Ten FROM MauSac";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                listColor.add(rs.getString(1));
+            }
+            conn.close();
+            return listColor;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public int insert(ColorProduct t) {
+        try {
+            Connection conn = DBConnector.getConnection();
+            String sql = "INSERT INTO MauSac\n"
                     + "VALUES(?, ?, ?)";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setObject(1, t.getId());
@@ -145,34 +144,34 @@ public class GPUInforDAO implements ModelDAO<GPUInfo>{
     }
 
     @Override
-    public int update(GPUInfo t) {
+    public int update(ColorProduct t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
+    
     @Override
-    public ArrayList<GPUInfo> getAll() {
-        ArrayList<GPUInfo> listGpu = new ArrayList<>();
+    public ArrayList<ColorProduct> getAll() {
+        ArrayList<ColorProduct> listColor = new ArrayList<>();
         try {
             Connection conn = DBConnector.getConnection();
-            String sql = "SELECT * FROM ThongTinGPU";
+            String sql = "Select * from MauSac";
             PreparedStatement stm = conn.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                GPUInfo gpu = new GPUInfo();
-                gpu.setId(rs.getObject(1, UUID.class));
-                gpu.setCode(rs.getString(2));
-                gpu.setName(rs.getString(3));
-                listGpu.add(gpu);
+                ColorProduct colorProduct = new ColorProduct();
+                colorProduct.setId(rs.getObject(1, UUID.class));
+                colorProduct.setCode(rs.getString(2));
+                colorProduct.setName(rs.getString(3));
+                listColor.add(colorProduct);
             }
             conn.close();
-            return listGpu;
+            return listColor;
         } catch (SQLException e) {
             return null;
         }
     }
 
     @Override
-    public GPUInfo selectById(String code) {
+    public ColorProduct selectById(String code) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

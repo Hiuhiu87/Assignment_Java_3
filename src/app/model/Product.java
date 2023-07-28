@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.ProductDAO;
+import app.repository.ProductRepository;
 import java.util.UUID;
 
 /**

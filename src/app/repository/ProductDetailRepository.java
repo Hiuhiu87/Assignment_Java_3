@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
 import app.model.ProductDetail;
@@ -15,10 +15,10 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class ProductDetailDAO implements ModelDAO<ProductDetail> {
+public class ProductDetailRepository implements ModelRepository<ProductDetail> {
 
-    public static ProductDetailDAO getInstance() {
-        return new ProductDetailDAO();
+    public static ProductDetailRepository getInstance() {
+        return new ProductDetailRepository();
     }
 
     @Override
@@ -108,12 +108,12 @@ public class ProductDetailDAO implements ModelDAO<ProductDetail> {
             while (rs.next()) {
                 ProductDetail productDetail = new ProductDetail();
                 productDetail.setId(rs.getObject(1, UUID.class));
-                productDetail.setIdProduct(ProductDAO.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
-                productDetail.setIdCompany(CompanyDAO.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
-                productDetail.setIdColor(ColorDAO.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
-                productDetail.setIdType(ProductTypeDAO.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
-                productDetail.setIdCPU(CPUInforDAO.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
-                productDetail.setIdGPU(GPUInforDAO.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
+                productDetail.setIdProduct(ProductRepository.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
+                productDetail.setIdCompany(CompanyRepository.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
+                productDetail.setIdColor(ColorRepository.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
+                productDetail.setIdType(ProductTypeRepository.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
+                productDetail.setIdCPU(CPUInforRepository.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
+                productDetail.setIdGPU(GPUInforRepository.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
                 productDetail.setROM(rs.getInt(8));
                 productDetail.setRAM(rs.getInt(9));
                 productDetail.setSerial(rs.getString(10));
@@ -144,12 +144,12 @@ public class ProductDetailDAO implements ModelDAO<ProductDetail> {
             while (rs.next()) {
                 ProductDetail productDetail = new ProductDetail();
                 productDetail.setId(rs.getObject(1, UUID.class));
-                productDetail.setIdProduct(ProductDAO.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
-                productDetail.setIdCompany(CompanyDAO.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
-                productDetail.setIdColor(ColorDAO.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
-                productDetail.setIdType(ProductTypeDAO.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
-                productDetail.setIdCPU(CPUInforDAO.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
-                productDetail.setIdGPU(GPUInforDAO.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
+                productDetail.setIdProduct(ProductRepository.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
+                productDetail.setIdCompany(CompanyRepository.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
+                productDetail.setIdColor(ColorRepository.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
+                productDetail.setIdType(ProductTypeRepository.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
+                productDetail.setIdCPU(CPUInforRepository.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
+                productDetail.setIdGPU(GPUInforRepository.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
                 productDetail.setROM(rs.getInt(8));
                 productDetail.setRAM(rs.getInt(9));
                 productDetail.setSerial(rs.getString(10));
@@ -215,12 +215,12 @@ public class ProductDetailDAO implements ModelDAO<ProductDetail> {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 productDetail.setId(rs.getObject(1, UUID.class));
-                productDetail.setIdProduct(ProductDAO.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
-                productDetail.setIdCompany(CompanyDAO.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
-                productDetail.setIdColor(ColorDAO.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
-                productDetail.setIdType(ProductTypeDAO.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
-                productDetail.setIdCPU(CPUInforDAO.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
-                productDetail.setIdGPU(GPUInforDAO.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
+                productDetail.setIdProduct(ProductRepository.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
+                productDetail.setIdCompany(CompanyRepository.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
+                productDetail.setIdColor(ColorRepository.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
+                productDetail.setIdType(ProductTypeRepository.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
+                productDetail.setIdCPU(CPUInforRepository.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
+                productDetail.setIdGPU(GPUInforRepository.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
                 productDetail.setROM(rs.getInt(8));
                 productDetail.setRAM(rs.getInt(9));
                 productDetail.setSerial(rs.getString(10));
@@ -272,12 +272,12 @@ public class ProductDetailDAO implements ModelDAO<ProductDetail> {
             while (rs.next()) {
                 ProductDetail productDetail = new ProductDetail();
                 productDetail.setId(rs.getObject(1, UUID.class));
-                productDetail.setIdProduct(ProductDAO.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
-                productDetail.setIdCompany(CompanyDAO.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
-                productDetail.setIdColor(ColorDAO.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
-                productDetail.setIdType(ProductTypeDAO.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
-                productDetail.setIdCPU(CPUInforDAO.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
-                productDetail.setIdGPU(GPUInforDAO.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
+                productDetail.setIdProduct(ProductRepository.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
+                productDetail.setIdCompany(CompanyRepository.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
+                productDetail.setIdColor(ColorRepository.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
+                productDetail.setIdType(ProductTypeRepository.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
+                productDetail.setIdCPU(CPUInforRepository.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
+                productDetail.setIdGPU(GPUInforRepository.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
                 productDetail.setROM(rs.getInt(8));
                 productDetail.setRAM(rs.getInt(9));
                 productDetail.setSerial(rs.getString(10));
@@ -325,12 +325,12 @@ public class ProductDetailDAO implements ModelDAO<ProductDetail> {
             while (rs.next()) {
                 ProductDetail productDetail = new ProductDetail();
                 productDetail.setId(rs.getObject(1, UUID.class));
-                productDetail.setIdProduct(ProductDAO.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
-                productDetail.setIdCompany(CompanyDAO.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
-                productDetail.setIdColor(ColorDAO.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
-                productDetail.setIdType(ProductTypeDAO.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
-                productDetail.setIdCPU(CPUInforDAO.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
-                productDetail.setIdGPU(GPUInforDAO.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
+                productDetail.setIdProduct(ProductRepository.getInstance().selectByUUID(rs.getObject(2, UUID.class)));
+                productDetail.setIdCompany(CompanyRepository.getInstance().selectByUUID(rs.getObject(3, UUID.class)));
+                productDetail.setIdColor(ColorRepository.getInstance().selectByUUID(rs.getObject(4, UUID.class)));
+                productDetail.setIdType(ProductTypeRepository.getInstance().selectByUUID(rs.getObject(5, UUID.class)));
+                productDetail.setIdCPU(CPUInforRepository.getInstance().selectByUUID(rs.getObject(6, UUID.class)));
+                productDetail.setIdGPU(GPUInforRepository.getInstance().selectByUUID(rs.getObject(7, UUID.class)));
                 productDetail.setROM(rs.getInt(8));
                 productDetail.setRAM(rs.getInt(9));
                 productDetail.setSerial(rs.getString(10));
@@ -396,12 +396,12 @@ public class ProductDetailDAO implements ModelDAO<ProductDetail> {
             ResultSet resultSet = stm.executeQuery();
             while (resultSet.next()) {
                 productDetail.setId(resultSet.getObject(1, UUID.class));
-                productDetail.setIdProduct(ProductDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
-                productDetail.setIdCompany(CompanyDAO.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
-                productDetail.setIdColor(ColorDAO.getInstance().selectByUUID(resultSet.getObject(4, UUID.class)));
-                productDetail.setIdType(ProductTypeDAO.getInstance().selectByUUID(resultSet.getObject(5, UUID.class)));
-                productDetail.setIdCPU(CPUInforDAO.getInstance().selectByUUID(resultSet.getObject(6, UUID.class)));
-                productDetail.setIdGPU(GPUInforDAO.getInstance().selectByUUID(resultSet.getObject(7, UUID.class)));
+                productDetail.setIdProduct(ProductRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                productDetail.setIdCompany(CompanyRepository.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
+                productDetail.setIdColor(ColorRepository.getInstance().selectByUUID(resultSet.getObject(4, UUID.class)));
+                productDetail.setIdType(ProductTypeRepository.getInstance().selectByUUID(resultSet.getObject(5, UUID.class)));
+                productDetail.setIdCPU(CPUInforRepository.getInstance().selectByUUID(resultSet.getObject(6, UUID.class)));
+                productDetail.setIdGPU(GPUInforRepository.getInstance().selectByUUID(resultSet.getObject(7, UUID.class)));
                 productDetail.setROM(resultSet.getInt(8));
                 productDetail.setRAM(resultSet.getInt(9));
                 productDetail.setSerial(resultSet.getString(10));

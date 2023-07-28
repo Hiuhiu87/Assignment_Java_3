@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.UserDAO;
+import app.repository.UserRepository;
 import app.model.User;
 import app.util.SplitString;
 import app.util.XEmail;
@@ -18,7 +18,7 @@ import javax.mail.MessagingException;
 public class UserService {
 
     public User login(String username, String password) {
-        User user = UserDAO.getInstance().login(username, password);
+        User user = UserRepository.getInstance().login(username, password);
         if (user != null) {
             return user;
         } else {
@@ -27,12 +27,12 @@ public class UserService {
     }
 
     public ArrayList<User> getAll() {
-        ArrayList<User> listUser = UserDAO.getInstance().getAll();
+        ArrayList<User> listUser = UserRepository.getInstance().getAll();
         return listUser;
     }
 
     public boolean add(User user) {
-        int addSuccess = UserDAO.getInstance().insert(user);
+        int addSuccess = UserRepository.getInstance().insert(user);
         if (addSuccess > 0) {
             String toEmail = user.getEmail();
             String message = "Vui Lòng Đổi Mật Khẩu Mới Sau Khi Đăng Nhập Vào Ứng Dụng \n" + user.getPassword();
@@ -49,7 +49,7 @@ public class UserService {
     }
 
     public boolean update(User user) {
-        int updateSuccess = UserDAO.getInstance().update(user);
+        int updateSuccess = UserRepository.getInstance().update(user);
         if (updateSuccess > 0) {
             String toEmail = user.getEmail();
             String subject = "Cập Nhật Thông Tin Nhân Viên " + user.getName();
@@ -65,25 +65,25 @@ public class UserService {
     }
 
     public boolean changePassword(String staffCode, String password) {
-        int success = UserDAO.getInstance().changePassword(staffCode, password);
+        int success = UserRepository.getInstance().changePassword(staffCode, password);
         return success > 0;
     }
 
     public User getUserByCode(String code) {
-        return UserDAO.getInstance().selectByCode(code);
+        return UserRepository.getInstance().selectByCode(code);
     }
 
     public boolean changeStatus(String staffCode) {
-        int changeSuccess = UserDAO.getInstance().changeStatus(staffCode);
+        int changeSuccess = UserRepository.getInstance().changeStatus(staffCode);
         return changeSuccess > 0;
     }
 
     public String generateNextStaffCode() {
-        return UserDAO.getInstance().generateNextModelCode();
+        return UserRepository.getInstance().generateNextModelCode();
     }
 
     public ArrayList<User> getListByName(String name) {
-        return UserDAO.getInstance().selectByName(name);
+        return UserRepository.getInstance().selectByName(name);
     }
 
 }

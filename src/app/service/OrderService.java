@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.OrderDAO;
+import app.repository.OrderRepository;
 import app.model.Order;
 import java.util.ArrayList;
 
@@ -16,22 +16,22 @@ public class OrderService {
     
     public boolean add(Order order){
         if (order != null) {
-            int addSuccess = OrderDAO.getInstance().insert(order);
+            int addSuccess = OrderRepository.getInstance().insert(order);
             return addSuccess > 0;
         }
         return false;
     }
     
     public ArrayList<Order> getAll(){
-        return OrderDAO.getInstance().getAll();
+        return OrderRepository.getInstance().getAll();
     }
     
     public Order getByCode(String codeOrder){
-        return OrderDAO.getInstance().selectByCode(codeOrder);
+        return OrderRepository.getInstance().selectByCode(codeOrder);
     }
     
     public ArrayList<Order> getOrderByStatus(Integer payStatus){
-        return OrderDAO.getInstance().getOrderByPayStatus(payStatus);
+        return OrderRepository.getInstance().getOrderByPayStatus(payStatus);
     }
     
 }

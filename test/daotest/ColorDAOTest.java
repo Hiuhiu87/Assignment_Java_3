@@ -4,7 +4,7 @@
  */
 package daotest;
 
-import app.dao.ColorDAO;
+import app.repository.ColorRepository;
 import app.model.ColorProduct;
 
 /**
@@ -13,7 +13,7 @@ import app.model.ColorProduct;
  */
 public class ColorDAOTest {
     public static void main(String[] args) {
-        ColorProduct colorProduct = ColorDAO.getInstance().selectByName("Trắng");
+        ColorProduct colorProduct = ColorRepository.getInstance().selectByName("Trắng");
         System.out.println(colorProduct.getName());
         System.out.println(colorProduct.getCode());
         System.out.println(colorProduct.getId());

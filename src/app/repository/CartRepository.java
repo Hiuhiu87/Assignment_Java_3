@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package app.dao;
+package app.repository;
 
 import app.dbconnect.DBConnector;
 import app.model.Cart;
@@ -18,10 +18,10 @@ import java.util.UUID;
  *
  * @author Admin
  */
-public class CartDAO implements ModelDAO<Cart> {
+public class CartRepository implements ModelRepository<Cart> {
 
-    public static CartDAO getInstance() {
-        return new CartDAO();
+    public static CartRepository getInstance() {
+        return new CartRepository();
     }
 
     public Cart selectByUUID(UUID id) {
@@ -43,8 +43,8 @@ public class CartDAO implements ModelDAO<Cart> {
             ResultSet resultSet = stm.executeQuery();
             while (resultSet.next()) {
                 cart.setId(resultSet.getObject(1, UUID.class));
-                cart.setCustomer(CustomerDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
-                cart.setUser(UserDAO.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
+                cart.setCustomer(CustomerRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                cart.setUser(UserRepository.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
                 cart.setCode(resultSet.getString(4));
                 cart.setCreateDate(resultSet.getObject(5, LocalDate.class));
                 cart.setPayStatus(resultSet.getInt(6));
@@ -121,8 +121,8 @@ public class CartDAO implements ModelDAO<Cart> {
             while (resultSet.next()) {
                 Cart cart = new Cart();
                 cart.setId(resultSet.getObject(1, UUID.class));
-                cart.setCustomer(CustomerDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
-                cart.setUser(UserDAO.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
+                cart.setCustomer(CustomerRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                cart.setUser(UserRepository.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
                 cart.setCode(resultSet.getString(4));
                 cart.setCreateDate(resultSet.getObject(5, LocalDate.class));
                 cart.setPayStatus(resultSet.getInt(6));
@@ -157,8 +157,8 @@ public class CartDAO implements ModelDAO<Cart> {
             Cart cart = new Cart();
             while (resultSet.next()) {
                 cart.setId(resultSet.getObject(1, UUID.class));
-                cart.setCustomer(CustomerDAO.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
-                cart.setUser(UserDAO.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
+                cart.setCustomer(CustomerRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                cart.setUser(UserRepository.getInstance().selectByUUID(resultSet.getObject(3, UUID.class)));
                 cart.setCode(resultSet.getString(4));
                 cart.setCreateDate(resultSet.getObject(5, LocalDate.class));
                 cart.setPayStatus(resultSet.getInt(6));

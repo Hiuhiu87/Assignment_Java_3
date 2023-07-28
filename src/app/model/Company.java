@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.CompanyDAO;
+import app.repository.CompanyRepository;
 import java.util.UUID;
 
 /**
@@ -19,7 +19,7 @@ public class Company {
 
     public Company(String name) {
         this.id = UUID.randomUUID();
-        this.code = CompanyDAO.getInstance().generateNextModelCode();
+        this.code = CompanyRepository.getInstance().generateNextModelCode();
         this.name = name;
     }
 

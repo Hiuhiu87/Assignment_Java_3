@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.CustomerDAO;
+import app.repository.CustomerRepository;
 import app.model.Customer;
 import java.util.ArrayList;
 
@@ -15,12 +15,12 @@ import java.util.ArrayList;
 public class CustomerService {
     
     public ArrayList<Customer> getAll(){
-        return CustomerDAO.getInstance().getAll();
+        return CustomerRepository.getInstance().getAll();
     }
     
     public boolean add(Customer customer){
         if (customer != null) {
-            int addSuccess = CustomerDAO.getInstance().insert(customer);
+            int addSuccess = CustomerRepository.getInstance().insert(customer);
             return addSuccess > 0;
         }
         return false;
@@ -28,14 +28,14 @@ public class CustomerService {
     
     public boolean update(Customer customer){
         if (customer != null) {
-            int updateSuccess = CustomerDAO.getInstance().insert(customer);
+            int updateSuccess = CustomerRepository.getInstance().insert(customer);
             return updateSuccess > 0;
         }
         return false;
     }
     
     public Customer getCustomer(String code){
-        return CustomerDAO.getInstance().selectById(code);
+        return CustomerRepository.getInstance().selectById(code);
     }
     
 }

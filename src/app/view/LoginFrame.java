@@ -4,7 +4,7 @@
  */
 package app.view;
 
-import app.dao.UserDAO;
+import app.repository.UserRepository;
 import app.model.User;
 import app.service.UserService;
 import java.awt.event.KeyAdapter;

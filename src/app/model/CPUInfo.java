@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.CPUInforDAO;
+import app.repository.CPUInforRepository;
 import java.util.UUID;
 
 /**
@@ -19,7 +19,7 @@ public class CPUInfo {
 
     public CPUInfo(String name) {
         this.id = UUID.randomUUID();
-        this.code = CPUInforDAO.getInstance().generateNextModelCode();
+        this.code = CPUInforRepository.getInstance().generateNextModelCode();
         this.name = name;
     }
 

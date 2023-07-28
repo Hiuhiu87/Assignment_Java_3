@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.CartDAO;
+import app.repository.CartRepository;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -28,7 +28,7 @@ public class Cart {
         this.id = UUID.randomUUID();
         this.customer = customer;
         this.user = user;
-        this.code = CartDAO.getInstance().generateNextModelCode();
+        this.code = CartRepository.getInstance().generateNextModelCode();
         this.createDate = LocalDate.now();
         this.payStatus = 0;
     }

@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.CartDetailDAO;
+import app.repository.CartDetailDAO;
 import app.model.CartDetail;
 import java.util.ArrayList;
 

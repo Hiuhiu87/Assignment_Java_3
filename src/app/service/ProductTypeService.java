@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.ProductTypeDAO;
+import app.repository.ProductTypeRepository;
 import app.model.ProductType;
 import java.util.ArrayList;
 
@@ -14,18 +14,18 @@ import java.util.ArrayList;
  */
 public class ProductTypeService {
     public ArrayList<ProductType> getAll() {
-        return ProductTypeDAO.getInstance().getAll();
+        return ProductTypeRepository.getInstance().getAll();
     }
 
     public void add(ProductType productType) {
-        ProductTypeDAO.getInstance().insert(productType);
+        ProductTypeRepository.getInstance().insert(productType);
     }
 
     public void update(ProductType productType) {
-        ProductTypeDAO.getInstance().update(productType);
+        ProductTypeRepository.getInstance().update(productType);
     }
 
     public ArrayList<String> getNameType() {
-        return ProductTypeDAO.getInstance().getNameType();
+        return ProductTypeRepository.getInstance().getNameType();
     }
 }

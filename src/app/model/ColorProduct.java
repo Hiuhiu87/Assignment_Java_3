@@ -4,7 +4,7 @@
  */
 package app.model;
 
-import app.dao.ColorDAO;
+import app.repository.ColorRepository;
 import java.util.UUID;
 
 /**
@@ -19,7 +19,7 @@ public class ColorProduct {
 
     public ColorProduct(String name) {
         this.id = UUID.randomUUID();
-        this.code = ColorDAO.getInstance().generateNextModelCode();
+        this.code = ColorRepository.getInstance().generateNextModelCode();
         this.name = name;
     }
 

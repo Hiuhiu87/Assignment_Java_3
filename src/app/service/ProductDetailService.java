@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.ProductDetailDAO;
+import app.repository.ProductDetailRepository;
 import app.model.ProductDetail;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,39 +17,39 @@ import java.util.UUID;
 public class ProductDetailService {
 
     public ArrayList<String> getAllNameProduct() {
-        return ProductDetailDAO.getInstance().getNameProduct();
+        return ProductDetailRepository.getInstance().getNameProduct();
     }
 
     public ArrayList<ProductDetail> getAll() {
-        return ProductDetailDAO.getInstance().getAll();
+        return ProductDetailRepository.getInstance().getAll();
     }
 
     public int add(ProductDetail prdDetail) {
-        return ProductDetailDAO.getInstance().insert(prdDetail);
+        return ProductDetailRepository.getInstance().insert(prdDetail);
     }
 
     public int update(ProductDetail prdDetail) {
-        return ProductDetailDAO.getInstance().update(prdDetail);
+        return ProductDetailRepository.getInstance().update(prdDetail);
     }
 
     public ArrayList<String> getProductSerial(String name) {
-        return ProductDetailDAO.getInstance().getListSerial(name);
+        return ProductDetailRepository.getInstance().getListSerial(name);
     }
 
     public ProductDetail getProductBySerial(String serial) {
-        return ProductDetailDAO.getInstance().getProductDetailBySerial(serial);
+        return ProductDetailRepository.getInstance().getProductDetailBySerial(serial);
     }
 
     public boolean changeProductStatus(String serial) {
-        return ProductDetailDAO.getInstance().updateStatusProduct(serial);
+        return ProductDetailRepository.getInstance().updateStatusProduct(serial);
     }
 
     public ArrayList<ProductDetail> searchByPrice(BigDecimal priceMin, BigDecimal pricMax) {
-        return ProductDetailDAO.getInstance().selectByPrice(priceMin, pricMax);
+        return ProductDetailRepository.getInstance().selectByPrice(priceMin, pricMax);
     }
 
     public ArrayList<ProductDetail> searchByName(String name) {
-        return ProductDetailDAO.getInstance().getListByName(name);
+        return ProductDetailRepository.getInstance().getListByName(name);
     }
 
 //    public int getProductQuantity(UUID id){
@@ -57,7 +57,7 @@ public class ProductDetailService {
 //    }
     
     public ArrayList<ProductDetail> getListByCode(String code){
-        return ProductDetailDAO.getInstance().getListByCode(code);
+        return ProductDetailRepository.getInstance().getListByCode(code);
     }
 
 }

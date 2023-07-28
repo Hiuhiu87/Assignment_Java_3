@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.OrderDetailDAO;
+import app.repository.OrderDetailDAO;
 import app.model.OrderDetail;
 import java.util.ArrayList;
 

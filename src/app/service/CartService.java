@@ -4,7 +4,7 @@
  */
 package app.service;
 
-import app.dao.CartDAO;
+import app.repository.CartRepository;
 import app.model.Cart;
 import java.util.ArrayList;
 
@@ -16,17 +16,17 @@ public class CartService {
 
     public boolean add(Cart order) {
         if (order != null) {
-            int addSuccess = CartDAO.getInstance().insert(order);
+            int addSuccess = CartRepository.getInstance().insert(order);
             return addSuccess > 0;
         }
         return false;
     }
 
     public ArrayList<Cart> getAll() {
-        return CartDAO.getInstance().getAll();
+        return CartRepository.getInstance().getAll();
     }
     
     public Cart selectByCode(String cartCode){
-        return CartDAO.getInstance().selectByCode(cartCode);
+        return CartRepository.getInstance().selectByCode(cartCode);
     }
 }

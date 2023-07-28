@@ -4,13 +4,13 @@
  */
 package app.view;
 
-import app.dao.CPUInforDAO;
-import app.dao.ColorDAO;
-import app.dao.CompanyDAO;
-import app.dao.GPUInforDAO;
-import app.dao.ProductDAO;
-import app.dao.ProductDetailDAO;
-import app.dao.ProductTypeDAO;
+import app.repository.CPUInforRepository;
+import app.repository.ColorRepository;
+import app.repository.CompanyRepository;
+import app.repository.GPUInforRepository;
+import app.repository.ProductRepository;
+import app.repository.ProductDetailRepository;
+import app.repository.ProductTypeRepository;
 import app.model.CPUInfo;
 import app.model.ColorProduct;
 import app.model.Company;
@@ -221,7 +221,7 @@ public class ProductPanel extends javax.swing.JPanel {
             countError++;
         } else {
             String nameProduct = (String) cbbNameProductDetail.getSelectedItem();
-            product = ProductDAO.getInstance().selectByName(nameProduct);
+            product = ProductRepository.getInstance().selectByName(nameProduct);
         }
 
         Company company = null;
@@ -229,7 +229,7 @@ public class ProductPanel extends javax.swing.JPanel {
             countError++;
         } else {
             String nameCompany = (String) cbbCompany.getSelectedItem();
-            company = CompanyDAO.getInstance().selectByName(nameCompany);
+            company = CompanyRepository.getInstance().selectByName(nameCompany);
         }
 
         ColorProduct color = null;
@@ -237,7 +237,7 @@ public class ProductPanel extends javax.swing.JPanel {
             countError++;
         } else {
             String nameColor = (String) cbbColorProduct.getSelectedItem();
-            color = ColorDAO.getInstance().selectByName(nameColor);
+            color = ColorRepository.getInstance().selectByName(nameColor);
         }
 
         ProductType type = null;
@@ -245,7 +245,7 @@ public class ProductPanel extends javax.swing.JPanel {
             countError++;
         } else {
             String nameTypePro = (String) cbbTypeLaptop.getSelectedItem();
-            type = ProductTypeDAO.getInstance().selectByName(nameTypePro);
+            type = ProductTypeRepository.getInstance().selectByName(nameTypePro);
         }
 
         CPUInfo idCPU = null;
@@ -253,7 +253,7 @@ public class ProductPanel extends javax.swing.JPanel {
             countError++;
         } else {
             String cpuName = (String) cbbCPUProduct.getSelectedItem();
-            idCPU = CPUInforDAO.getInstance().selectByName(cpuName);
+            idCPU = CPUInforRepository.getInstance().selectByName(cpuName);
         }
 
         GPUInfo idGPU = null;
@@ -261,7 +261,7 @@ public class ProductPanel extends javax.swing.JPanel {
             countError++;
         } else {
             String gpuName = (String) cbbCardProduct.getSelectedItem();
-            idGPU = GPUInforDAO.getInstance().selectByName(gpuName);
+            idGPU = GPUInforRepository.getInstance().selectByName(gpuName);
         }
 
         String moTa = txtAreaDescription.getText();
@@ -344,7 +344,7 @@ public class ProductPanel extends javax.swing.JPanel {
 
         if (countError == 0) {
             ProductDetail prdDetail = new ProductDetail(product, company, color, type, idCPU, idGPU, rom, ram, serial, namBH, moTa, giaNhap, giaBan, tinhTrang);
-            ProductDetail productDetailCheck = ProductDetailDAO.getInstance().getProductDetailBySerial(serial);
+            ProductDetail productDetailCheck = ProductDetailRepository.getInstance().getProductDetailBySerial(serial);
             if (productDetailCheck.getId() != null) {
                 prdDetail.setId(productDetailCheck.getId());
             }
@@ -1412,7 +1412,7 @@ public class ProductPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRefeshActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        String codeProduct = ProductDAO.getInstance().generateNextModelCode();
+        String codeProduct = ProductRepository.getInstance().generateNextModelCode();
         txtCodeProduct.setText(codeProduct);
         txtNameProduct.setText("");
     }//GEN-LAST:event_btnNewActionPerformed
