@@ -19,11 +19,21 @@ import app.service.ProductDetailService;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -69,6 +79,18 @@ public class SellPanel extends javax.swing.JPanel {
             }
         });
         threadCam.start();
+        Thread threadScan = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                    scan();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(SellPanel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        threadScan.start();
         this.user = user;
         tblDisplayProduct.setModel(tblModelProduct);
         tblDisplayOrder.setModel(tblModelOrder);
@@ -248,17 +270,50 @@ public class SellPanel extends javax.swing.JPanel {
         }
 
     }
-    
-    private void initWebcam(){
+
+    private void initWebcam() {
         Dimension size = WebcamResolution.QVGA.getSize();
         webcam = Webcam.getWebcams().get(1);
         webcam.setViewSize(size);
-        
+
         panel = new WebcamPanel(webcam);
         panel.setPreferredSize(size);
-        
-        panelBarcode.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0,0,470,300));
+
+        panelBarcode.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 300));
         panelBarcode.revalidate();
+    }
+
+    private void scan() {
+        do {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SellPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            Result result = null;
+            BufferedImage image = null;
+
+            if (webcam.isOpen()) {
+                if ((image = webcam.getImage()) == null) {
+                    continue;
+                }
+            }
+            
+            LuminanceSource source = new BufferedImageLuminanceSource(image);
+            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
+            
+            try {
+                result = new MultiFormatReader().decode(binaryBitmap);
+            } catch (NotFoundException ex) {
+                Logger.getLogger(SellPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (result != null) {
+                System.out.println(result.getText());
+            }
+            
+        } while (true);
     }
 
     /**
@@ -279,6 +334,7 @@ public class SellPanel extends javax.swing.JPanel {
         rdPaied = new javax.swing.JRadioButton();
         rdWaitPay = new javax.swing.JRadioButton();
         rdCancel = new javax.swing.JRadioButton();
+        panelBarcodeContainer = new javax.swing.JPanel();
         panelBarcode = new javax.swing.JPanel();
         panelCart = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -411,8 +467,12 @@ public class SellPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        panelBarcode.setPreferredSize(new java.awt.Dimension(0, 10));
+        panelBarcodeContainer.setBorder(javax.swing.BorderFactory.createTitledBorder("Barcode"));
+        panelBarcodeContainer.setPreferredSize(new java.awt.Dimension(0, 10));
+        panelBarcodeContainer.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         panelBarcode.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelBarcodeContainer.add(panelBarcode, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 310, 240));
 
         panelCart.setBackground(new java.awt.Color(255, 255, 255));
         panelCart.setBorder(javax.swing.BorderFactory.createTitledBorder("Giỏ Hàng"));
@@ -444,7 +504,7 @@ public class SellPanel extends javax.swing.JPanel {
             panelCartLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCartLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 883, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCartLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -677,7 +737,7 @@ public class SellPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(panelBarcode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(panelBarcodeContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(panelCart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12)
@@ -693,7 +753,7 @@ public class SellPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(panelOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(panelBarcode, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(panelBarcodeContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(panelCart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -943,6 +1003,7 @@ public class SellPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelCashError;
     private javax.swing.JPanel panelBarcode;
+    private javax.swing.JPanel panelBarcodeContainer;
     private javax.swing.JPanel panelCart;
     private javax.swing.JPanel panelCustomer;
     private javax.swing.JPanel panelOrder;
