@@ -25,5 +25,9 @@ public class OrderDetailService {
     public ArrayList<OrderDetail> getAll() {
         return OrderDetailRepository.getInstance().getAll();
     }
-    
+
+    public ArrayList<OrderDetail> getOrderByList(String code) {
+        return OrderDetailRepository.getInstance().getListByOrderCode(code);
+    }
+
 }

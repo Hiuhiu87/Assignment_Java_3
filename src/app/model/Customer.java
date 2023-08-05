@@ -22,11 +22,12 @@ public class Customer {
     private LocalDate dateOfBirth;
     private String phoneNumber;
     private String address;
+    private String email;
 
     public Customer() {
     }
 
-    public Customer(String name, String middleName, String lastName, LocalDate dateOfBirth, String phoneNumber, String address) {
+    public Customer(String name, String middleName, String lastName, LocalDate dateOfBirth, String phoneNumber, String address, String email) {
         this.id = UUID.randomUUID();
         this.code = CustomerRepository.getInstance().generateNextModelCode();
         this.name = name;
@@ -35,6 +36,7 @@ public class Customer {
         this.dateOfBirth = dateOfBirth;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.email = email;
     }
 
     public UUID getId() {
@@ -102,7 +104,21 @@ public class Customer {
     }
 
     public String getFullname() {
+        if (lastName == null || middleName == null) {
+            return name;
+        }
         return lastName + " " + middleName + " " + name;
+    }
+
+    public String getEmail() {
+        if (email == null) {
+            return "";
+        }
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

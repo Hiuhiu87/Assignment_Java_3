@@ -6,7 +6,6 @@ package app.model;
 
 import app.repository.UserRepository;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 

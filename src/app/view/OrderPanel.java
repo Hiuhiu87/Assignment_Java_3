@@ -4,17 +4,110 @@
  */
 package app.view;
 
+import app.model.Order;
+import app.model.OrderDetail;
+import app.service.OrderDetailService;
+import app.service.OrderService;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Admin
  */
 public class OrderPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form orderPanel
-     */
+    private DefaultTableModel tableModelOrder = new DefaultTableModel();
+    private DefaultTableModel tableModelOrderDetail = new DefaultTableModel();
+    private OrderService orderService = new OrderService();
+    private OrderDetailService orderDetailService = new OrderDetailService();
+    private ArrayList<Order> listOrders = new ArrayList<>();
+    private ArrayList<OrderDetail> listOrderDetails = new ArrayList<>();
+    private Order order;
+
     public OrderPanel() {
         initComponents();
+        tblDisplayOrder.setModel(tableModelOrder);
+        tblDetailOrder.setModel(tableModelOrderDetail);
+        addColumnTableDetailOrder();
+        addColumnTableOrder();
+        refreshTableOrder();
+    }
+
+    private void addColumnTableOrder() {
+        tableModelOrder.addColumn("Mã");
+        tableModelOrder.addColumn("Ngày Tạo");
+        tableModelOrder.addColumn("Tên Nhân Viên");
+        tableModelOrder.addColumn("Tình Trạng");
+    }
+
+    private void addColumnTableDetailOrder() {
+        tableModelOrderDetail.addColumn("STT");
+        tableModelOrderDetail.addColumn("Mã Hóa Đơn");
+        tableModelOrderDetail.addColumn("Tên");
+        tableModelOrderDetail.addColumn("Giá");
+        tableModelOrderDetail.addColumn("Serial");
+        tableModelOrderDetail.addColumn("Số Lượng");
+        tableModelOrderDetail.addColumn("Tổng Tiền");
+    }
+
+    private void fillTableOrder(ArrayList<Order> list) {
+        int stt = 0;
+        tableModelOrder.setRowCount(0);
+        for (Order o : list) {
+            Object[] row = {
+                ++stt,
+                o.getCode(),
+                o.getCreateDate(),
+                o.getUser().getName(),
+                o.getPayStatusString()
+            };
+            tableModelOrder.addRow(row);
+        }
+    }
+
+    private void refreshTableOrder() {
+        listOrders = orderService.getAll();
+        fillTableOrder(listOrders);
+    }
+
+    private void fillTableOrderDetail(ArrayList<OrderDetail> list) {
+        int stt = 0;
+        tableModelOrderDetail.setRowCount(0);
+        for (OrderDetail o : list) {
+            Object[] row = {
+                ++stt,
+                o.getOrder().getCode(),
+                o.getProduct().getIdProduct().getName(),
+                o.getProduct().getGiaBan(),
+                o.getProduct().getSerial(),
+                o.getQuantity(),
+                o.getUnitPrice()
+            };
+            tableModelOrderDetail.addRow(row);
+        }
+    }
+
+    private void refreshTableOrderDetail(String ma) {
+        listOrderDetails = orderDetailService.getOrderByList(ma);
+        if (listOrderDetails.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Hóa Đơn Này Chưa Có Sản Phẩm Nào");
+            return;
+        } else {
+            fillTableOrderDetail(listOrderDetails);
+        }
+    }
+    
+    private void showDetailOrder(Order o){
+        txtOrderCode.setText(o.getCode());
+        txtNameCustomer.setText(o.getCustomer().getName());
+        txtNameStaff.setText(o.getUser().getName());
+        txtCreateDate.setText(String.valueOf(o.getCreateDate()));
+        txtTypePay.setText(o.getTypePayment());
+        txtTotalMoney.setText(String.valueOf(o.getTotalMoney()));
+        txtCustomerMoney.setText(String.valueOf(o.getCustomerMoney()));
+        txtPayStatus.setText(o.getPayStatusString());
     }
 
     /**
@@ -26,32 +119,69 @@ public class OrderPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        btnGroupOrderStatus = new javax.swing.ButtonGroup();
+        panelOrder = new javax.swing.JPanel();
+        rdWait = new javax.swing.JRadioButton();
+        rdPaied = new javax.swing.JRadioButton();
+        rdCancel = new javax.swing.JRadioButton();
+        rdAll = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        textField1 = new app.view.swing.TextField();
-        button1 = new app.view.swing.Button();
-        button2 = new app.view.swing.Button();
-        jPanel2 = new javax.swing.JPanel();
+        tblDisplayOrder = new javax.swing.JTable();
+        txtSearch = new app.view.swing.TextField();
+        btnImport = new app.view.swing.Button();
+        btnExport = new app.view.swing.Button();
+        panelOrderDetail = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
+        tblDetailOrder = new javax.swing.JTable();
+        panelInformation = new javax.swing.JPanel();
+        txtNameStaff = new app.view.swing.TextField();
+        txtOrderCode = new app.view.swing.TextField();
+        txtNameCustomer = new app.view.swing.TextField();
+        txtTypePay = new app.view.swing.TextField();
+        txtCreateDate = new app.view.swing.TextField();
+        txtTotalMoney = new app.view.swing.TextField();
+        txtPayStatus = new app.view.swing.TextField();
+        txtCustomerMoney = new app.view.swing.TextField();
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh Sách Hóa Đơn"));
+        setBackground(new java.awt.Color(255, 255, 255));
 
-        jRadioButton1.setText("jRadioButton1");
+        panelOrder.setBackground(new java.awt.Color(255, 255, 255));
+        panelOrder.setBorder(javax.swing.BorderFactory.createTitledBorder("Danh Sách Hóa Đơn"));
 
-        jRadioButton2.setText("jRadioButton2");
+        btnGroupOrderStatus.add(rdWait);
+        rdWait.setText("Chờ Thanh Toán");
+        rdWait.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdWaitActionPerformed(evt);
+            }
+        });
 
-        jRadioButton3.setText("jRadioButton3");
+        btnGroupOrderStatus.add(rdPaied);
+        rdPaied.setText("Đã Thanh Toán");
+        rdPaied.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdPaiedActionPerformed(evt);
+            }
+        });
 
-        jRadioButton4.setText("jRadioButton4");
+        btnGroupOrderStatus.add(rdCancel);
+        rdCancel.setText("Hủy");
+        rdCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdCancelActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        btnGroupOrderStatus.add(rdAll);
+        rdAll.setSelected(true);
+        rdAll.setText("Tất cả");
+        rdAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdAllActionPerformed(evt);
+            }
+        });
+
+        tblDisplayOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -62,76 +192,86 @@ public class OrderPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblDisplayOrder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDisplayOrderMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblDisplayOrder);
 
-        textField1.setText("textField1");
+        txtSearch.setLabelText("Tìm Kiếm");
 
-        button1.setText("button1");
+        btnImport.setBackground(new java.awt.Color(23, 35, 51));
+        btnImport.setForeground(new java.awt.Color(255, 255, 255));
+        btnImport.setLabel("Import");
 
-        button2.setText("button1");
+        btnExport.setBackground(new java.awt.Color(23, 35, 51));
+        btnExport.setForeground(new java.awt.Color(255, 255, 255));
+        btnExport.setLabel("Export");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelOrderLayout = new javax.swing.GroupLayout(panelOrder);
+        panelOrder.setLayout(panelOrderLayout);
+        panelOrderLayout.setHorizontalGroup(
+            panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelOrderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jRadioButton2))
+                    .addGroup(panelOrderLayout.createSequentialGroup()
+                        .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rdWait)
+                            .addComponent(rdPaied))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jRadioButton3)
+                        .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelOrderLayout.createSequentialGroup()
+                                .addComponent(rdCancel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                                .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(37, 37, 37))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jRadioButton4)
+                            .addGroup(panelOrderLayout.createSequentialGroup()
+                                .addComponent(rdAll)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(102, 102, 102)))))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+        panelOrderLayout.setVerticalGroup(
+            panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelOrderLayout.createSequentialGroup()
+                .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelOrderLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jRadioButton1)
+                        .addComponent(rdWait)
                         .addGap(18, 18, 18)
-                        .addComponent(jRadioButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(rdPaied))
+                    .addGroup(panelOrderLayout.createSequentialGroup()
+                        .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelOrderLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton3)
+                                .addComponent(rdCancel)
                                 .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelOrderLayout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(5, 5, 5)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton4)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rdAll)
+                            .addGroup(panelOrderLayout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGroup(panelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Hóa Đơn Chi Tiết"));
+        panelOrderDetail.setBackground(new java.awt.Color(255, 255, 255));
+        panelOrderDetail.setBorder(javax.swing.BorderFactory.createTitledBorder("Hóa Đơn Chi Tiết"));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblDetailOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -142,30 +282,82 @@ public class OrderPanel extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tblDetailOrder);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelOrderDetailLayout = new javax.swing.GroupLayout(panelOrderDetail);
+        panelOrderDetail.setLayout(panelOrderDetailLayout);
+        panelOrderDetailLayout.setHorizontalGroup(
+            panelOrderDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 666, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelOrderDetailLayout.setVerticalGroup(
+            panelOrderDetailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông Tin Hóa Đơn"));
+        panelInformation.setBackground(new java.awt.Color(255, 255, 255));
+        panelInformation.setBorder(javax.swing.BorderFactory.createTitledBorder("Thông Tin Hóa Đơn"));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        txtNameStaff.setLabelText("Tên Nhân Viên");
+
+        txtOrderCode.setLabelText("Mã Hóa Đơn");
+
+        txtNameCustomer.setLabelText("Tên Khách Hàng");
+
+        txtTypePay.setLabelText("Hình Thức Thanh Toán");
+
+        txtCreateDate.setLabelText("Ngày Tạo");
+
+        txtTotalMoney.setLabelText("Tổng Tiền Hóa Đơn");
+
+        txtPayStatus.setLabelText("Tình Trạng");
+
+        txtCustomerMoney.setLabelText("Tiền Khách Đưa");
+
+        javax.swing.GroupLayout panelInformationLayout = new javax.swing.GroupLayout(panelInformation);
+        panelInformation.setLayout(panelInformationLayout);
+        panelInformationLayout.setHorizontalGroup(
+            panelInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInformationLayout.createSequentialGroup()
+                .addGap(193, 193, 193)
+                .addGroup(panelInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNameCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNameStaff, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtOrderCode, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(88, 88, 88)
+                .addGroup(panelInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtTotalMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtTypePay, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCreateDate, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(99, 99, 99)
+                .addGroup(panelInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCustomerMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPayStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 256, Short.MAX_VALUE)
+        panelInformationLayout.setVerticalGroup(
+            panelInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInformationLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(panelInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelInformationLayout.createSequentialGroup()
+                        .addComponent(txtPayStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtCustomerMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelInformationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(panelInformationLayout.createSequentialGroup()
+                            .addComponent(txtCreateDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtTypePay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtTotalMoney, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelInformationLayout.createSequentialGroup()
+                            .addComponent(txtOrderCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtNameStaff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtNameCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -175,11 +367,11 @@ public class OrderPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelInformation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(panelOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                        .addComponent(panelOrderDetail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -187,29 +379,68 @@ public class OrderPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelOrderDetail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelInformation, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void rdWaitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdWaitActionPerformed
+        listOrders = orderService.getOrderByStatus(0);
+        fillTableOrder(listOrders);
+    }//GEN-LAST:event_rdWaitActionPerformed
+
+    private void rdCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdCancelActionPerformed
+        listOrders = orderService.getOrderByStatus(2);
+        fillTableOrder(listOrders);
+    }//GEN-LAST:event_rdCancelActionPerformed
+
+    private void rdAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdAllActionPerformed
+        refreshTableOrder();
+    }//GEN-LAST:event_rdAllActionPerformed
+
+    private void rdPaiedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdPaiedActionPerformed
+        listOrders = orderService.getOrderByStatus(1);
+        fillTableOrder(listOrders);
+    }//GEN-LAST:event_rdPaiedActionPerformed
+
+    private void tblDisplayOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDisplayOrderMouseClicked
+        int row = tblDisplayOrder.getSelectedRow();
+        int column_code = 1;
+        if (row >= 0) {
+            String orderCode = (String) tblDisplayOrder.getValueAt(row, column_code);
+            order = orderService.getByCode(orderCode);
+            showDetailOrder(order);
+            refreshTableOrderDetail(orderCode);
+        }
+    }//GEN-LAST:event_tblDisplayOrderMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private app.view.swing.Button button1;
-    private app.view.swing.Button button2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
+    private app.view.swing.Button btnExport;
+    private javax.swing.ButtonGroup btnGroupOrderStatus;
+    private app.view.swing.Button btnImport;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private app.view.swing.TextField textField1;
+    private javax.swing.JPanel panelInformation;
+    private javax.swing.JPanel panelOrder;
+    private javax.swing.JPanel panelOrderDetail;
+    private javax.swing.JRadioButton rdAll;
+    private javax.swing.JRadioButton rdCancel;
+    private javax.swing.JRadioButton rdPaied;
+    private javax.swing.JRadioButton rdWait;
+    private javax.swing.JTable tblDetailOrder;
+    private javax.swing.JTable tblDisplayOrder;
+    private app.view.swing.TextField txtCreateDate;
+    private app.view.swing.TextField txtCustomerMoney;
+    private app.view.swing.TextField txtNameCustomer;
+    private app.view.swing.TextField txtNameStaff;
+    private app.view.swing.TextField txtOrderCode;
+    private app.view.swing.TextField txtPayStatus;
+    private app.view.swing.TextField txtSearch;
+    private app.view.swing.TextField txtTotalMoney;
+    private app.view.swing.TextField txtTypePay;
     // End of variables declaration//GEN-END:variables
 }

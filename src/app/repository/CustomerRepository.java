@@ -7,7 +7,6 @@ package app.repository;
 import app.dbconnect.DBConnector;
 import app.model.Customer;
 import app.model.OrderDetail;
-import app.model.ProductDetail;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -98,6 +97,7 @@ public class CustomerRepository implements ModelRepository<Customer> {
                                ,[NgaySinh]
                                ,[Sdt]
                                ,[DiaChi]
+                               ,[email]
                            FROM [dbo].[KhachHang]
                          """;
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -113,6 +113,7 @@ public class CustomerRepository implements ModelRepository<Customer> {
                 customer.setDateOfBirth(rs.getObject(6, LocalDate.class));
                 customer.setPhoneNumber(rs.getString(7));
                 customer.setAddress(rs.getString(8));
+                customer.setEmail(rs.getString(9));
                 listCustomers.add(customer);
             }
             return listCustomers;
@@ -133,6 +134,7 @@ public class CustomerRepository implements ModelRepository<Customer> {
                                ,[NgaySinh]
                                ,[Sdt]
                                ,[DiaChi]
+                               ,[email]
                            FROM [dbo].[KhachHang]
                          WHERE [Ma] = ?
                          """;
@@ -149,6 +151,7 @@ public class CustomerRepository implements ModelRepository<Customer> {
                 customer.setDateOfBirth(rs.getObject(6, LocalDate.class));
                 customer.setPhoneNumber(rs.getString(7));
                 customer.setAddress(rs.getString(8));
+                customer.setEmail(rs.getString(9));
             }
             return customer;
         } catch (SQLException e) {
@@ -171,7 +174,7 @@ public class CustomerRepository implements ModelRepository<Customer> {
             if (rs.next()) {
                 String lastCode = rs.getString(1);
                 if (lastCode == null) {
-                    return "Kh1";
+                    return "KH1";
                 }
                 int lastNumber = Integer.parseInt(lastCode.substring(2));
                 int nextNumber = lastNumber + 1;
@@ -237,13 +240,34 @@ public class CustomerRepository implements ModelRepository<Customer> {
         }
     }
 
-//    public ArrayList<OrderDetail> getListBought() {
-//        try (Connection conn = DBConnector.getConnection()) {
-//            String sql = """
-//                         
-//                         """;
-//        } catch (Exception e) {
-//        }
-//    }
+    public ArrayList<OrderDetail> getListBought(String customerCode) {
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT [IdHoaDon]
+                               ,[IdChiTietSP]
+                               ,[SoLuong]
+                               ,[DonGia]
+                           FROM [dbo].[HoaDonChiTiet]
+                           JOIN HoaDon ON HoaDonChiTiet.IdHoaDon = HoaDon.Id
+                           JOIN KhachHang ON HoaDon.IdKH = KhachHang.Id
+                           WHERE KhachHang.Ma = ?
+                         """;
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setObject(1, customerCode);
+            ArrayList<OrderDetail> listOrderDetails = new ArrayList<>();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setOrder(OrderRepository.getInstance().selectByUUID(resultSet.getObject(1, UUID.class)));
+                orderDetail.setProduct(ProductDetailRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                orderDetail.setQuantity(resultSet.getInt(3));
+                orderDetail.setUnitPrice(resultSet.getBigDecimal(4));
+                listOrderDetails.add(orderDetail);
+            }
+            return listOrderDetails;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

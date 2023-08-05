@@ -9,6 +9,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Admin
+ * @param <T>
  */
 public interface ModelRepository<T> {
 

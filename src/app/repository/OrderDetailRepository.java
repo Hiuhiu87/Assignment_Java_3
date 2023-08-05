@@ -89,4 +89,33 @@ public class OrderDetailRepository implements ModelRepository<OrderDetail> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    public ArrayList<OrderDetail> getListByOrderCode(String code) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT [IdHoaDon]
+                               ,[IdChiTietSP]
+                               ,[SoLuong]
+                               ,[DonGia]
+                           FROM [dbo].[HoaDonChiTiet]
+                           JOIN HoaDon ON HoaDonChiTiet.IdHoaDon = HoaDon.Id
+                           WHERE HoaDon.Ma = ? 
+                         """;
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setObject(1, code);
+            ArrayList<OrderDetail> listOrderDetails = new ArrayList<>();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                OrderDetail orderDetail = new OrderDetail();
+                orderDetail.setOrder(OrderRepository.getInstance().selectByUUID(resultSet.getObject(1, UUID.class)));
+                orderDetail.setProduct(ProductDetailRepository.getInstance().selectByUUID(resultSet.getObject(2, UUID.class)));
+                orderDetail.setQuantity(resultSet.getInt(3));
+                orderDetail.setUnitPrice(resultSet.getBigDecimal(4));
+                listOrderDetails.add(orderDetail);
+            }
+            return listOrderDetails;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
 }

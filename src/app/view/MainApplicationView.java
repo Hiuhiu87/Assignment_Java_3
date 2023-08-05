@@ -7,7 +7,6 @@ package app.view;
 import app.model.User;
 import app.service.UserService;
 import java.awt.Color;
-import java.lang.annotation.Target;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -15,7 +14,7 @@ import javax.swing.JPanel;
  *
  * @author Admin
  */
-public class MainApplication extends javax.swing.JFrame {
+public class MainApplicationView extends javax.swing.JFrame {
 
     /**
      * Creates new form MainApplication
@@ -26,17 +25,27 @@ public class MainApplication extends javax.swing.JFrame {
     private StaffPanel panelStaff;
     private ProductPanel panelProduct;
     private CustomerPanel customerPanel;
+    private OrderPanel orderPanel;
 
-    public MainApplication(User user) {
+    public MainApplicationView(User user) {
         initComponents();
         this.user = user;
         service = new UserService();
-        panelSell = new SellPanel(user);
-        panelStaff = new StaffPanel();
-        panelProduct = new ProductPanel();
-        customerPanel = new CustomerPanel();
-        this.onClicked(productPanelBtn, productStatusLb);
-        showPanel(panelProduct);
+        if (user.getOffice().getCode().equals("ST1")) {
+            panelSell = new SellPanel(user);
+            panelProduct = new ProductPanel();
+            customerPanel = new CustomerPanel();
+            orderPanel = new OrderPanel();
+        } else {
+            panelSell = new SellPanel(user);
+            panelStaff = new StaffPanel();
+            panelProduct = new ProductPanel();
+            customerPanel = new CustomerPanel();
+            orderPanel = new OrderPanel();
+        }
+
+        this.onClicked(sellPanelBtn, sellStatusLb);
+        showPanel(panelSell);
         showInfor(user);
     }
 
@@ -89,6 +98,7 @@ public class MainApplication extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         panelControl.setBackground(new java.awt.Color(23, 35, 51));
 
@@ -570,6 +580,10 @@ public class MainApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_productLbMouseClicked
 
     private void staffLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_staffLbMouseClicked
+        if (panelStaff == null) {
+            JOptionPane.showMessageDialog(this, "Bạn Không Có Quyền Truy Cập Vào Mục Này");
+            return;
+        }
         this.onClicked(staffPanelBtn, staffStatusLb);
         this.unClicked(orderPanelBtn, orderStatusLb);
         this.unClicked(sellPanelBtn, sellStatusLb);
@@ -588,16 +602,19 @@ public class MainApplication extends javax.swing.JFrame {
         this.unClicked(staffPanelBtn, staffStatusLb);
         this.unClicked(userPanelBtn, userStatusLb);
         this.unClicked(discountPanelBtn, discountStatusLb);
+        showPanel(orderPanel);
     }//GEN-LAST:event_orderLbMouseClicked
 
     private void discountLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discountLbMouseClicked
-        this.onClicked(discountPanelBtn, discountStatusLb);
-        this.unClicked(orderPanelBtn, orderStatusLb);
-        this.unClicked(sellPanelBtn, sellStatusLb);
-        this.unClicked(statisticPanelBtn, statisticStatusLb);
-        this.unClicked(staffPanelBtn, staffStatusLb);
-        this.unClicked(userPanelBtn, userStatusLb);
-        this.unClicked(productPanelBtn, productStatusLb);
+//        this.onClicked(discountPanelBtn, discountStatusLb);
+//        this.unClicked(orderPanelBtn, orderStatusLb);
+//        this.unClicked(sellPanelBtn, sellStatusLb);
+//        this.unClicked(statisticPanelBtn, statisticStatusLb);
+//        this.unClicked(staffPanelBtn, staffStatusLb);
+//        this.unClicked(userPanelBtn, userStatusLb);
+//        this.unClicked(productPanelBtn, productStatusLb);
+        JOptionPane.showMessageDialog(this, "Chưa Phát Triển");
+        return;
     }//GEN-LAST:event_discountLbMouseClicked
 
     private void userLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userLbMouseClicked
@@ -612,13 +629,15 @@ public class MainApplication extends javax.swing.JFrame {
     }//GEN-LAST:event_userLbMouseClicked
 
     private void statisticLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statisticLbMouseClicked
-        this.onClicked(statisticPanelBtn, staffStatusLb);
-        this.unClicked(orderPanelBtn, orderStatusLb);
-        this.unClicked(sellPanelBtn, sellStatusLb);
-        this.unClicked(staffPanelBtn, staffStatusLb);
-        this.unClicked(userPanelBtn, userStatusLb);
-        this.unClicked(discountPanelBtn, discountStatusLb);
-        this.unClicked(productPanelBtn, productStatusLb);
+//        this.onClicked(statisticPanelBtn, staffStatusLb);
+//        this.unClicked(orderPanelBtn, orderStatusLb);
+//        this.unClicked(sellPanelBtn, sellStatusLb);
+//        this.unClicked(staffPanelBtn, staffStatusLb);
+//        this.unClicked(userPanelBtn, userStatusLb);
+//        this.unClicked(discountPanelBtn, discountStatusLb);
+//        this.unClicked(productPanelBtn, productStatusLb);
+        JOptionPane.showMessageDialog(this, "Chưa Phát Triển");
+        return;
     }//GEN-LAST:event_statisticLbMouseClicked
 
     private void exitLbMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitLbMouseClicked

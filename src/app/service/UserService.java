@@ -85,5 +85,9 @@ public class UserService {
     public ArrayList<User> getListByName(String name) {
         return UserRepository.getInstance().selectByName(name);
     }
+    
+    public boolean checkEmailExist(String email){
+        return UserRepository.getInstance().checkEmail(email);
+    }
 
 }

@@ -26,6 +26,7 @@ import app.service.ProductDetailService;
 import app.service.ProductService;
 import app.service.ProductTypeService;
 import app.util.XFileExcel;
+import app.util.XGenerateQRCode;
 import app.view.swing.Combobox;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -1436,6 +1437,12 @@ public class ProductPanel extends javax.swing.JPanel {
                 refreshTable();
                 refreshTablePrdDetail();
                 JOptionPane.showMessageDialog(this, "Thêm Sản Phẩm Thành Công");
+                boolean generateQR = XGenerateQRCode.doGenerate(productDetail.getSerial(), productDetail.getIdProduct().getName());
+                if (generateQR) {
+                    JOptionPane.showMessageDialog(this, "Tạo mã QR thành công");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Tạo mã QR Không thành công");
+                }
             }
         }
     }//GEN-LAST:event_btnAddDetailProdActionPerformed

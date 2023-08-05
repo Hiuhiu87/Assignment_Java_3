@@ -51,15 +51,6 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="186" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="labelPasswordError" min="-2" pref="230" max="-2" attributes="0"/>
-                      <Component id="labelEmailError" alignment="1" min="-2" pref="230" max="-2" attributes="0"/>
-                      <Component id="txtAccount" alignment="1" min="-2" pref="236" max="-2" attributes="0"/>
-                      <Component id="pswAccount" alignment="1" min="-2" pref="236" max="-2" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="labelForgetPass" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="cbShowPass" min="-2" max="-2" attributes="0"/>
-                      </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Group type="102" attributes="0">
@@ -70,6 +61,19 @@
                               <Component id="panelBtn" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="labelPasswordError" min="-2" pref="230" max="-2" attributes="0"/>
+                              <Component id="labelEmailError" alignment="1" min="-2" pref="230" max="-2" attributes="0"/>
+                              <Component id="txtAccount" alignment="1" min="-2" pref="236" max="-2" attributes="0"/>
+                              <Component id="pswAccount" alignment="1" min="-2" pref="236" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="cbShowPass" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="173" max="-2" attributes="0"/>
@@ -94,19 +98,16 @@
                   <Component id="pswAccount" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                   <Component id="labelPasswordError" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="cbShowPass" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelForgetPass" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="cbShowPass" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnLogin" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnExit" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="panelBtn" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="43" max="32767" attributes="0"/>
+                  <EmptySpace pref="27" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -132,11 +133,6 @@
               <Color blue="4c" green="2c" red="17" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="SIGN IN"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="labelForgetPass">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Forget Your Password ?"/>
           </Properties>
         </Component>
         <Container class="javax.swing.JPanel" name="panelBtn">

@@ -6,6 +6,7 @@ package app.service;
 
 import app.repository.OrderRepository;
 import app.model.Order;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 /**
@@ -32,6 +33,14 @@ public class OrderService {
     
     public ArrayList<Order> getOrderByStatus(Integer payStatus){
         return OrderRepository.getInstance().getOrderByPayStatus(payStatus);
+    }
+    
+    public boolean payOrder(BigDecimal priceOrder, BigDecimal priceCustomer, String typePay, String code){
+        int paySuccess = OrderRepository.getInstance().updatePriceAfterPay(priceOrder, priceCustomer, typePay, code);
+        if (paySuccess > 0) {
+            return true;
+        }
+        return false;
     }
     
 }

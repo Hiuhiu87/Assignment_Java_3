@@ -354,5 +354,21 @@ public class UserRepository implements ModelRepository<User> {
             return null;
         }
     }
-    
+
+    public boolean checkEmail(String email) {
+        try (Connection con = DBConnector.getConnection()) {
+            String sql = """
+                         SELECT Email
+                         FROM [dbo].[NhanVien]
+                         Where Email = ?
+                         """;
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setObject(1, email);
+            ResultSet rs = preparedStatement.executeQuery();
+            return rs.next();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

@@ -5,6 +5,7 @@
 package app.model;
 
 import app.repository.OrderRepository;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -22,6 +23,8 @@ public class Order {
     private Integer payStatus;
     private String typePayment;
     private Cart cart;
+    private BigDecimal totalMoney;
+    private BigDecimal customerMoney;
 
     public Order() {
     }
@@ -114,6 +117,22 @@ public class Order {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public BigDecimal getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(BigDecimal totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public BigDecimal getCustomerMoney() {
+        return customerMoney;
+    }
+
+    public void setCustomerMoney(BigDecimal customerMoney) {
+        this.customerMoney = customerMoney;
     }
 
 }

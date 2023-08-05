@@ -6,6 +6,7 @@ package app.repository;
 
 import app.dbconnect.DBConnector;
 import app.model.Order;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -80,15 +81,17 @@ public class OrderRepository implements ModelRepository<Order> {
     public ArrayList<Order> getAll() {
         try (Connection conn = DBConnector.getConnection()) {
             String sql = """
-                         SELECT [Id]
-                               ,[IdKH]
-                               ,[IdNV]
-                               ,[Ma]
-                               ,[NgayTao]
-                               ,[TinhTrang]
-                               ,[HinhThucThanhToan]
-                               ,[IdGioHang]
-                           FROM [dbo].[HoaDon]
+                        SELECT [Id]
+                                                        ,[IdKH]
+                                                        ,[IdNV]
+                                                        ,[Ma]
+                                                        ,[NgayTao]
+                                                        ,[TinhTrang]
+                                                        ,[HinhThucThanhToan]
+                                                        ,[IdGioHang]
+                                                        ,[GiaTriHoaDon]
+                                                        ,[TienKhachThanhToan]
+                                                    FROM [dbo].[HoaDon]
                          """;
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -103,6 +106,8 @@ public class OrderRepository implements ModelRepository<Order> {
                 order.setPayStatus(resultSet.getInt(6));
                 order.setTypePayment(resultSet.getString(7));
                 order.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
+                order.setTotalMoney(resultSet.getBigDecimal(9));
+                order.setCustomerMoney(resultSet.getBigDecimal(10));
                 listOrders.add(order);
             }
             return listOrders;
@@ -166,14 +171,16 @@ public class OrderRepository implements ModelRepository<Order> {
         try (Connection conn = DBConnector.getConnection()) {
             String sql = """
                          SELECT [Id]
-                               ,[IdKH]
-                               ,[IdNV]
-                               ,[Ma]
-                               ,[NgayTao]
-                               ,[TinhTrang]
-                               ,[HinhThucThanhToan]
-                               ,[IdGioHang]
-                           FROM [dbo].[HoaDon]
+                                                        ,[IdKH]
+                                                        ,[IdNV]
+                                                        ,[Ma]
+                                                        ,[NgayTao]
+                                                        ,[TinhTrang]
+                                                        ,[HinhThucThanhToan]
+                                                        ,[IdGioHang]
+                                                        ,[GiaTriHoaDon]
+                                                        ,[TienKhachThanhToan]
+                                                    FROM [dbo].[HoaDon]
                          WHERE [Ma] = ?
                          """;
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -189,6 +196,8 @@ public class OrderRepository implements ModelRepository<Order> {
                 order.setPayStatus(resultSet.getInt(6));
                 order.setTypePayment(resultSet.getString(7));
                 order.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
+                order.setTotalMoney(resultSet.getBigDecimal(9));
+                order.setCustomerMoney(resultSet.getBigDecimal(10));
             }
             return order;
         } catch (SQLException e) {
@@ -200,14 +209,16 @@ public class OrderRepository implements ModelRepository<Order> {
         try (Connection conn = DBConnector.getConnection()) {
             String sql = """
                          SELECT [Id]
-                               ,[IdKH]
-                               ,[IdNV]
-                               ,[Ma]
-                               ,[NgayTao]
-                               ,[TinhTrang]
-                               ,[HinhThucThanhToan]
-                               ,[IdGioHang]
-                           FROM [dbo].[HoaDon]
+                                                        ,[IdKH]
+                                                        ,[IdNV]
+                                                        ,[Ma]
+                                                        ,[NgayTao]
+                                                        ,[TinhTrang]
+                                                        ,[HinhThucThanhToan]
+                                                        ,[IdGioHang]
+                                                        ,[GiaTriHoaDon]
+                                                        ,[TienKhachThanhToan]
+                                                    FROM [dbo].[HoaDon]
                          WHERE [TinhTrang] = ?
                          """;
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -245,7 +256,9 @@ public class OrderRepository implements ModelRepository<Order> {
                                ,[TinhTrang]
                                ,[HinhThucThanhToan]
                                ,[IdGioHang]
-                         FROM [dbo].[HoaDon]
+                               ,[GiaTriHoaDon]
+                               ,[TienKhachThanhToan]
+                           FROM [dbo].[HoaDon]
                          WHERE [Id] = ?
                          """;
             PreparedStatement stm = conn.prepareStatement(sql);
@@ -260,6 +273,8 @@ public class OrderRepository implements ModelRepository<Order> {
                 order.setPayStatus(resultSet.getInt(6));
                 order.setTypePayment(resultSet.getString(7));
                 order.setCart(CartRepository.getInstance().selectByUUID(resultSet.getObject(8, UUID.class)));
+                order.setTotalMoney(resultSet.getBigDecimal(9));
+                order.setCustomerMoney(resultSet.getBigDecimal(10));
             }
             conn.close();
             return order;
@@ -278,6 +293,30 @@ public class OrderRepository implements ModelRepository<Order> {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setObject(1, status);
             preparedStatement.setObject(2, code);
+            int result = preparedStatement.executeUpdate();
+            return result;
+        } catch (SQLException e) {
+            return 0;
+        }
+    }
+
+    public int updatePriceAfterPay(BigDecimal priceOrder, BigDecimal priceCustomer, String typePay, String code) {
+        try (Connection conn = DBConnector.getConnection()) {
+            String sql = """
+                         UPDATE [dbo].[HoaDon]
+                            SET [TinhTrang] = ?,
+                                [GiaTriHoaDon] = ?,
+                                [TienKhachThanhToan] = ?,
+                                [HinhThucThanhToan] = ?
+                          WHERE [Ma] = ?
+                         """;
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            int statusPaied = 1;
+            preparedStatement.setObject(1, statusPaied);
+            preparedStatement.setObject(2, priceOrder);
+            preparedStatement.setObject(3, priceCustomer);
+            preparedStatement.setObject(4, typePay);
+            preparedStatement.setObject(5, code);
             int result = preparedStatement.executeUpdate();
             return result;
         } catch (SQLException e) {

@@ -6,6 +6,7 @@ package app.service;
 
 import app.repository.CustomerRepository;
 import app.model.Customer;
+import app.model.OrderDetail;
 import java.util.ArrayList;
 
 /**
@@ -36,6 +37,10 @@ public class CustomerService {
     
     public Customer getCustomer(String code){
         return CustomerRepository.getInstance().selectById(code);
+    }
+    
+    public ArrayList<OrderDetail> getListBought(String code){
+        return CustomerRepository.getInstance().getListBought(code);
     }
     
 }
